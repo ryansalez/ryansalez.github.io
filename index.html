@@ -3,363 +3,829 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Direito ao PIS/PASEP</title>
+    <title>Consulta PIS/PASEP 4.0 | Gov.br</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+        :root {
+            --primary: #0066cc;
+            --secondary: #004080;
+            --accent: #00a3e0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f0f2f5;
-            color: #333;
+            box-sizing: border-box;
         }
         
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+        
+        /* Efeito de partículas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* Header holográfico */
         .header {
-            background-color: #003366;
+            background: rgba(0, 51, 102, 0.9);
             color: white;
-            padding: 20px;
+            padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
         
-        .government-banner {
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 0%,
+                rgba(0, 163, 224, 0.1) 30%,
+                transparent 60%,
+                rgba(0, 102, 204, 0.1) 100%
+            );
+            animation: shine 8s infinite linear;
+            z-index: 0;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-25%, -25%); }
+            100% { transform: rotate(360deg) translate(-25%, -25%); }
+        }
+        
+        .logo-container {
+            position: relative;
+            z-index: 1;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .government-banner img {
-            height: 50px;
-            filter: brightness(0) invert(1);
         }
         
         .logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
+            margin-bottom: 1rem;
         }
         
-        .logo img {
+        .logo-img {
             height: 70px;
-            margin-right: 15px;
+            margin-right: 1rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
         
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .logo-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Container principal com efeito de vidro */
         .container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 30px;
-            background-color: white;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            max-width: 900px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 51, 102, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
         
-        h1, h2, h3 {
-            color: #003366;
-            margin-top: 0;
+        /* Abas 3D */
+        .tabs {
+            display: flex;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
         }
         
-        h2 {
-            border-bottom: 2px solid #003366;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+        .tab {
+            padding: 1rem 1.5rem;
+            color: white;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+        
+        .tab:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 25%;
+            height: 50%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Formulário moderno */
+        .form-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 1.5rem;
             position: relative;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #003366;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
         }
         
-        .required:after {
-            content: " *";
-            color: #e74c3c;
+        .required::after {
+            content: ' *';
+            color: var(--danger);
         }
         
-        input[type="text"],
-        input[type="number"],
-        input[type="date"],
-        select {
+        .input-wrapper {
+            position: relative;
+        }
+        
+        input, select {
             width: 100%;
-            padding: 12px;
+            padding: 0.8rem 1rem;
             border: 2px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.8);
         }
         
         input:focus, select:focus {
-            border-color: #003366;
+            border-color: var(--accent);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.2);
+            box-shadow: 0 0 0 3px rgba(0, 163, 224, 0.2);
+            background: white;
         }
         
-        .invalid-input {
-            border-color: #e74c3c !important;
-        }
-        
-        .error-icon {
+        .input-icon {
             position: absolute;
-            right: 10px;
-            top: 38px;
-            color: #e74c3c;
-            font-weight: bold;
-            display: none;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
         }
         
-        .error-message {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
+        /* Validação inovadora */
+        .invalid-input {
+            border-color: var(--danger) !important;
+            padding-right: 2.5rem;
+            animation: shake 0.5s;
         }
         
-        .documents-row {
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .error-feedback {
             display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
+            align-items: center;
+            margin-top: 0.5rem;
+            color: var(--danger);
+            font-size: 0.85rem;
         }
         
-        .documents-row .form-group {
-            flex: 1;
+        .error-feedback i {
+            margin-right: 0.5rem;
         }
         
-        button {
-            background-color: #003366;
-            color: white;
+        /* Botão com efeito 3D */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
             border: none;
-            padding: 14px 28px;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 18px;
-            transition: all 0.3s;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        button:hover {
-            background-color: #004080;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .result-container {
-            margin-top: 30px;
-            padding: 20px;
             border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 102, 204, 0.2);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-block {
+            display: flex;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn-icon {
+            margin-left: 0.5rem;
+        }
+        
+        /* Resultado com animação */
+        .result-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
             display: none;
+            animation: slideUp 0.5s ease;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
         
-        .positive-result {
-            background-color: #d5f5e3;
-            border-left: 5px solid #2ecc71;
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .negative-result {
-            background-color: #fadbd8;
-            border-left: 5px solid #e74c3c;
+        .result-positive {
+            border-left: 4px solid var(--success);
+            background: linear-gradient(to right, rgba(46, 204, 113, 0.05), white 20%);
+        }
+        
+        .result-negative {
+            border-left: 4px solid var(--danger);
+            background: linear-gradient(to right, rgba(231, 76, 60, 0.05), white 20%);
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .result-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
         }
         
         .result-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 1.3rem;
+            font-weight: 600;
         }
         
         .result-details {
-            margin-top: 15px;
+            margin-top: 1rem;
         }
         
+        .result-details p {
+            margin-bottom: 0.8rem;
+        }
+        
+        .result-list {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .result-list li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Progresso da consulta */
+        .progress-container {
+            margin: 1.5rem 0;
+            display: none;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        /* Footer holográfico */
         .footer {
             text-align: center;
-            padding: 20px;
-            background-color: #003366;
+            padding: 2rem;
+            background: rgba(0, 51, 102, 0.9);
             color: white;
-            font-size: 14px;
-            margin-top: 40px;
+            position: relative;
+            margin-top: 3rem;
         }
         
-        .disclaimer {
-            font-size: 13px;
-            color: #7f8c8d;
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            border-left: 4px solid #bdc3c7;
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="5,5"/></svg>');
+            opacity: 0.3;
         }
         
-        .government-images {
+        .footer-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-links {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             flex-wrap: wrap;
-            margin: 30px 0;
-            gap: 15px;
+            gap: 1.5rem;
+            margin: 1rem 0;
         }
         
-        .government-images img {
-            width: 150px;
-            height: auto;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
         }
         
-        .government-images img:hover {
-            transform: scale(1.05);
+        .footer-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
         }
         
-        @media (max-width: 600px) {
-            .documents-row {
+        .footer-disclaimer {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 1rem;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .form-row {
                 flex-direction: column;
-                gap: 15px;
+                gap: 1rem;
             }
             
             .container {
-                padding: 20px;
-                margin: 20px 10px;
+                margin: 1rem;
+                border-radius: 12px;
             }
             
-            .government-banner img {
-                height: 40px;
+            .logo {
+                flex-direction: column;
+                text-align: center;
             }
             
-            .government-images img {
-                width: 120px;
+            .logo-img {
+                margin-right: 0;
+                margin-bottom: 1rem;
             }
+        }
+        
+        /* Efeitos especiais */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 102, 204, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0); }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="government-banner">
-            <img src="https://www.gov.br/static/assets/2021/imagens/logo-governo-federal.png" alt="Governo Federal">
-            <img src="https://www.gov.br/static/assets/2021/imagens/logo-cidadania-governo-federal.png" alt="Cidadania">
-            <img src="https://www.gov.br/static/assets/2021/imagens/logo-brasil.png" alt="Brasil">
-        </div>
-        <div class="logo">
-            <img src="https://www.gov.br/mre/pt-br/delbrasupa/assuntos/brasil/brasil.png/@@images/image.png" alt="Brasão do Brasil">
-            <div>
-                <h1>Consulta PIS/PASEP</h1>
-                <p>Verifique seu direito ao benefício do PIS/PASEP</p>
-            </div>
-        </div>
-    </div>
+    <!-- Efeito de partículas -->
+    <div id="particles-js"></div>
     
-    <div class="container">
-        <div class="government-images">
-            <img src="https://www.gov.br/mre/pt-br/delbrasupa/assuntos/brasil/brasil-3.png/@@images/image.png" alt="Símbolos nacionais">
-            <img src="https://www.gov.br/mre/pt-br/delbrasupa/assuntos/brasil/brasil-2.png/@@images/image.png" alt="Bandeira do Brasil">
-            <img src="https://www.gov.br/mre/pt-br/delbrasupa/assuntos/brasil/brasil-4.png/@@images/image.png" alt="Selo nacional">
+    <!-- Header holográfico -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <img src="https://www.gov.br/static/assets/2021/imagens/logo-governo-federal.png" alt="Governo Federal" class="logo-img floating">
+                <div class="logo-text">
+                    <h1>Consulta PIS/PASEP 4.0</h1>
+                    <p>Verificação inteligente de benefícios</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Container principal -->
+    <main class="container pulse">
+        <!-- Abas 3D -->
+        <div class="tabs">
+            <div class="tab active" data-tab="consulta">
+                <i class="fas fa-search"></i> Consulta
+            </div>
+            <div class="tab" data-tab="informacoes">
+                <i class="fas fa-info-circle"></i> Sobre o PIS/PASEP
+            </div>
+            <div class="tab" data-tab="duvidas">
+                <i class="fas fa-question-circle"></i> Dúvidas
+            </div>
         </div>
         
-        <h2>Informe seus dados para consulta</h2>
-        <p>Preencha o formulário abaixo com seus dados pessoais e informações trabalhistas para verificar se você tem direito ao benefício do PIS/PASEP.</p>
+        <!-- Conteúdo das abas -->
+        <div class="tab-content active" id="consulta">
+            <section class="form-section">
+                <h2><i class="fas fa-user-check"></i> Informe seus dados para consulta</h2>
+                <p>Preencha o formulário abaixo com seus dados pessoais e trabalhistas para verificar seu direito ao benefício do PIS/PASEP.</p>
+                
+                <form id="consultaForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome_completo" class="required">Nome Completo</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="nome_completo" name="nome_completo" placeholder="Digite seu nome completo" required>
+                                <i class="fas fa-user input-icon"></i>
+                            </div>
+                            <div class="error-feedback" id="nome_error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Por favor, insira seu nome completo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cpf" class="required">CPF</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                                <i class="fas fa-id-card input-icon"></i>
+                            </div>
+                            <div class="error-feedback" id="cpf_error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>CPF inválido</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="data_nascimento" class="required">Data de Nascimento</label>
+                            <div class="input-wrapper">
+                                <input type="date" id="data_nascimento" name="data_nascimento" required>
+                                <i class="fas fa-calendar-alt input-icon"></i>
+                            </div>
+                            <div class="error-feedback" id="nascimento_error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Data inválida</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nis" class="required">Número do NIS (PIS/PASEP)</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="nis" name="nis" placeholder="000.00000.00-0" required>
+                                <i class="fas fa-credit-card input-icon"></i>
+                            </div>
+                            <div class="error-feedback" id="nis_error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>NIS inválido</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="nome_mae" class="required">Nome da Mãe</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="nome_mae" name="nome_mae" placeholder="Nome completo da sua mãe" required>
+                                <i class="fas fa-female input-icon"></i>
+                            </div>
+                            <div class="error-feedback" id="mae_error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Por favor, insira o nome da sua mãe</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3><i class="fas fa-briefcase"></i> Informações Trabalhistas</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tempo_contribuicao" class="required">Tempo de Contribuição (anos)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="tempo_contribuicao" name="tempo_contribuicao" min="0" max="50" placeholder="Ex: 5" required>
+                                <i class="fas fa-clock input-icon"></i>
+                            </div>
+                            <div class="error-feedback" id="contribuicao_error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Informe um valor entre 1 e 50</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ultimo_emprego" class="required">Último Emprego Registrado</label>
+                            <div class="input-wrapper">
+                                <input type="date" id="ultimo_emprego" name="ultimo_emprego" required>
+                                <i class="fas fa-calendar-check input-icon"></i>
+                            </div>
+                            <div class="error-feedback" id="emprego_error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Data inválida</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="renda" class="required">Renda Mensal Média (R$)</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="renda" name="renda" placeholder="1.500,00" required>
+                            <i class="fas fa-money-bill-wave input-icon"></i>
+                        </div>
+                        <div class="error-feedback" id="renda_error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Informe um valor válido</span>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-text" id="progressText">Consultando sistemas governamentais...</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block" id="consultarBtn">
+                        <i class="fas fa-search"></i> Consultar Direito ao PIS/PASEP
+                    </button>
+                </form>
+                
+                <div class="result-container" id="resultado">
+                    <div class="result-header">
+                        <i class="fas fa-check-circle result-icon" id="resultIcon"></i>
+                        <div class="result-title" id="resultTitle"></div>
+                    </div>
+                    <div class="result-details" id="resultDetails"></div>
+                </div>
+            </section>
+        </div>
         
-        <form id="consultaForm">
-            <div class="form-group">
-                <label for="nome_completo" class="required">Nome Completo:</label>
-                <input type="text" id="nome_completo" name="nome_completo" required>
-                <span class="error-icon">✗</span>
-                <div class="error-message">Por favor, insira seu nome completo</div>
-            </div>
-            
-            <div class="documents-row">
-                <div class="form-group">
-                    <label for="cpf" class="required">CPF:</label>
-                    <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
-                    <span class="error-icon">✗</span>
-                    <div class="error-message">CPF inválido</div>
+        <div class="tab-content" id="informacoes">
+            <section class="info-section">
+                <h2><i class="fas fa-info-circle"></i> Sobre o PIS/PASEP</h2>
+                <p>O Programa de Integração Social (PIS) e o Programa de Formação do Patrimônio do Servidor Público (PASEP) são benefícios destinados aos trabalhadores brasileiros.</p>
+                
+                <div class="card" style="background: rgba(0, 102, 204, 0.05); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; border-left: 4px solid var(--primary);">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;"><i class="fas fa-question-circle"></i> Quem tem direito?</h3>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Trabalhadores com cadastro ativo no PIS/PASEP há pelo menos 5 anos</li>
+                        <li>Ter trabalhado com carteira assinada por pelo menos 30 dias no ano-base</li>
+                        <li>Ter recebido em média até 2 salários mínimos mensais</li>
+                        <li>Ter os dados corretamente informados pelo empregador</li>
+                    </ul>
                 </div>
                 
-                <div class="form-group">
-                    <label for="data_nascimento" class="required">Data de Nascimento:</label>
-                    <input type="date" id="data_nascimento" name="data_nascimento" required>
-                    <span class="error-icon">✗</span>
-                    <div class="error-message">Data inválida</div>
-                </div>
-            </div>
-            
-            <div class="documents-row">
-                <div class="form-group">
-                    <label for="nis" class="required">Número do NIS (PIS/PASEP):</label>
-                    <input type="text" id="nis" name="nis" placeholder="000.00000.00-0" required>
-                    <span class="error-icon">✗</span>
-                    <div class="error-message">NIS inválido</div>
+                <h3 style="margin-top: 2rem;"><i class="fas fa-history"></i> Histórico do Programa</h3>
+                <p style="margin-top: 1rem;">O PIS foi criado em 1970 e o PASEP em 1971, com o objetivo de integrar o trabalhador ao desenvolvimento das empresas e do país.</p>
+            </section>
+        </div>
+        
+        <div class="tab-content" id="duvidas">
+            <section class="faq-section">
+                <h2><i class="fas fa-question-circle"></i> Perguntas Frequentes</h2>
+                
+                <div class="faq-item" style="margin: 1.5rem 0; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary);"><i class="fas fa-question" style="color: var(--accent);"></i> Como sacar o benefício?</h3>
+                    <p style="margin-top: 0.5rem;">O saque pode ser feito nas agências da Caixa Econômica Federal (para PIS) ou Banco do Brasil (para PASEP), com documento de identificação e cartão cidadão.</p>
                 </div>
                 
-                <div class="form-group">
-                    <label for="nome_mae" class="required">Nome da Mãe:</label>
-                    <input type="text" id="nome_mae" name="nome_mae" required>
-                    <span class="error-icon">✗</span>
-                    <div class="error-message">Por favor, insira o nome da sua mãe</div>
+                <div class="faq-item" style="margin: 1.5rem 0; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary);"><i class="fas fa-question" style="color: var(--accent);"></i> Qual o valor do benefício?</h3>
+                    <p style="margin-top: 0.5rem;">O valor corresponde a um salário mínimo vigente no ano do saque. Em 2023, o valor é de R$ 1.320,00.</p>
                 </div>
-            </div>
-            
-            <h3>Informações Trabalhistas</h3>
-            
-            <div class="form-group">
-                <label for="tempo_contribuicao" class="required">Tempo de Contribuição (anos):</label>
-                <input type="number" id="tempo_contribuicao" name="tempo_contribuicao" min="0" max="50" required>
-                <span class="error-icon">✗</span>
-                <div class="error-message">Informe um valor entre 1 e 50</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="ultimo_emprego" class="required">Data do Último Emprego Registrado:</label>
-                <input type="date" id="ultimo_emprego" name="ultimo_emprego" required>
-                <span class="error-icon">✗</span>
-                <div class="error-message">Data inválida</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="renda" class="required">Renda Mensal Média (R$):</label>
-                <input type="text" id="renda" name="renda" placeholder="1.500,00" required>
-                <span class="error-icon">✗</span>
-                <div class="error-message">Informe um valor válido</div>
-            </div>
-            
-            <button type="submit" id="consultarBtn">Consultar Direito ao PIS/PASEP</button>
-            
-            <div class="disclaimer">
-                <p><strong>Importante:</strong> Esta consulta tem caráter informativo. Para ter certeza sobre seu direito ao benefício, consulte diretamente no site oficial da Caixa Econômica Federal ou do Banco do Brasil.</p>
-                <p>Seus dados estão protegidos conforme a Lei Geral de Proteção de Dados (LGPD).</p>
-            </div>
-        </form>
-        
-        <div id="resultado" class="result-container">
-            <div id="resultadoTitulo" class="result-title"></div>
-            <div id="resultadoDetalhes" class="result-details"></div>
+                
+                <div class="faq-item" style="margin: 1.5rem 0;">
+                    <h3 style="color: var(--primary);"><i class="fas fa-question" style="color: var(--accent);"></i> Como regularizar minha situação?</h3>
+                    <p style="margin-top: 0.5rem;">Procure a Central de Atendimento do PIS/PASEP ou acesse o site oficial da Caixa ou Banco do Brasil para verificar pendências.</p>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
     
-    <div class="footer">
-        <p>© 2023 Ministério do Trabalho e Previdência - Governo Federal</p>
-        <p>Este é um sistema de consulta simulada para fins educacionais</p>
-    </div>
+    <!-- Footer holográfico -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-external-link-alt"></i> Portal Gov.br</a>
+                <a href="#"><i class="fas fa-university"></i> Caixa Econômica</a>
+                <a href="#"><i class="fas fa-university"></i> Banco do Brasil</a>
+                <a href="#"><i class="fas fa-balance-scale"></i> Lei do PIS/PASEP</a>
+            </div>
+            <p class="footer-disclaimer">
+                © 2023 Ministério do Trabalho e Previdência - Governo Federal<br>
+                Este é um sistema de consulta simulada para fins educacionais
+            </p>
+        </div>
+    </footer>
     
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Elementos do formulário
-        const form = document.getElementById('consultaForm');
-        const consultarBtn = document.getElementById('consultarBtn');
+        // Inicializar partículas
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#0066cc"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#0066cc",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": true,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 0.5
+                        }
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+        
+        // Controle das abas
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Remover classe active de todas as abas e conteúdos
+                tabs.forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Adicionar classe active na aba e conteúdo selecionados
+                tab.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
         
         // Máscaras para os campos
         document.getElementById('cpf').addEventListener('input', function(e) {
@@ -391,71 +857,68 @@
         
         // Validações em tempo real
         document.getElementById('nome_completo').addEventListener('blur', function(e) {
-            validateField(e.target, e.target.value.trim().split(' ').length >= 2);
+            validateField(e.target, e.target.value.trim().split(' ').length >= 2, 'nome_error');
         });
         
         document.getElementById('data_nascimento').addEventListener('change', function(e) {
             const date = new Date(e.target.value);
             const isValid = !isNaN(date.getTime()) && date < new Date();
-            validateField(e.target, isValid);
+            validateField(e.target, isValid, 'nascimento_error');
         });
         
         document.getElementById('nome_mae').addEventListener('blur', function(e) {
-            validateField(e.target, e.target.value.trim().length >= 5);
+            validateField(e.target, e.target.value.trim().length >= 5, 'mae_error');
         });
         
         document.getElementById('tempo_contribuicao').addEventListener('blur', function(e) {
             const value = parseInt(e.target.value);
-            validateField(e.target, !isNaN(value) && value >= 1 && value <= 50);
+            validateField(e.target, !isNaN(value) && value >= 1 && value <= 50, 'contribuicao_error');
         });
         
         document.getElementById('ultimo_emprego').addEventListener('change', function(e) {
             const date = new Date(e.target.value);
             const isValid = !isNaN(date.getTime()) && date < new Date();
-            validateField(e.target, isValid);
+            validateField(e.target, isValid, 'emprego_error');
         });
         
         // Funções de validação
         function validateCPF(input) {
             const cpf = input.value.replace(/\D/g, '');
             const isValid = cpf.length === 11 && validarDigitosCPF(cpf);
-            validateField(input, isValid);
+            validateField(input, isValid, 'cpf_error');
             return isValid;
         }
         
         function validateNIS(input) {
             const nis = input.value.replace(/\D/g, '');
             const isValid = nis.length === 11;
-            validateField(input, isValid);
+            validateField(input, isValid, 'nis_error');
             return isValid;
         }
         
         function validateRenda(input) {
             const value = parseFloat(input.value.replace('.', '').replace(',', '.'));
             const isValid = !isNaN(value) && value > 0;
-            validateField(input, isValid);
+            validateField(input, isValid, 'renda_error');
             return isValid;
         }
         
-        function validateField(input, isValid) {
+        function validateField(input, isValid, errorId) {
             const errorIcon = input.nextElementSibling;
-            const errorMessage = errorIcon.nextElementSibling;
+            const errorElement = document.getElementById(errorId);
             
             if (!isValid && input.value) {
                 input.classList.add('invalid-input');
-                errorIcon.style.display = 'inline';
-                errorMessage.style.display = 'block';
+                errorElement.style.display = 'flex';
             } else {
                 input.classList.remove('invalid-input');
-                errorIcon.style.display = 'none';
-                errorMessage.style.display = 'none';
+                errorElement.style.display = 'none';
             }
             
             updateSubmitButton();
         }
         
         function validarDigitosCPF(cpf) {
-            // Validação simplificada dos dígitos verificadores
             if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
             
             let soma = 0;
@@ -491,66 +954,3 @@
             consultarBtn.disabled = !allValid;
         }
         
-        // Processamento do formulário
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Simular consulta ao sistema (em um sistema real, seria uma chamada AJAX)
-            setTimeout(() => {
-                const resultado = Math.random() > 0.3; // 70% de chance de ter direito
-                showResult(resultado);
-            }, 1500);
-            
-            // Mostrar loading
-            consultarBtn.disabled = true;
-            consultarBtn.textContent = 'Consultando...';
-        });
-        
-        function showResult(hasRight) {
-            const resultadoDiv = document.getElementById('resultado');
-            const titulo = document.getElementById('resultadoTitulo');
-            const detalhes = document.getElementById('resultadoDetalhes');
-            
-            if (hasRight) {
-                resultadoDiv.className = 'result-container positive-result';
-                titulo.textContent = '✔ Você pode ter direito ao PIS/PASEP!';
-                detalhes.innerHTML = `
-                    <p>De acordo com as informações fornecidas, você atende aos requisitos básicos para receber o benefício do PIS/PASEP.</p>
-                    <p><strong>Valor estimado:</strong> R$ ${(Math.random() * 500 + 300).toFixed(2)}</p>
-                    <p><strong>Próximo passo:</strong> Dirija-se a uma agência da Caixa Econômica Federal (para PIS) ou Banco do Brasil (para PASEP) com seus documentos para confirmar seu direito.</p>
-                    <p><strong>Documentos necessários:</strong></p>
-                    <ul>
-                        <li>Documento de identificação com foto</li>
-                        <li>CPF</li>
-                        <li>Cartão Cidadão ou número do NIS</li>
-                        <li>Comprovante de residência</li>
-                    </ul>
-                `;
-            } else {
-                resultadoDiv.className = 'result-container negative-result';
-                titulo.textContent = '✖ Você provavelmente não tem direito ao PIS/PASEP';
-                detalhes.innerHTML = `
-                    <p>Com base nas informações fornecidas, você não atende atualmente aos requisitos para receber o benefício.</p>
-                    <p><strong>Motivos possíveis:</strong></p>
-                    <ul>
-                        <li>Tempo de contribuição insuficiente</li>
-                        <li>Renda acima do limite permitido</li>
-                        <li>Período de trabalho não registrado adequadamente</li>
-                    </ul>
-                    <p>Para uma análise mais detalhada, consulte diretamente no site oficial da Caixa ou Banco do Brasil.</p>
-                `;
-            }
-            
-            resultadoDiv.style.display = 'block';
-            consultarBtn.disabled = false;
-            consultarBtn.textContent = 'Consultar Direito ao PIS/PASEP';
-            
-            // Rolagem suave para o resultado
-            resultadoDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Inicialização
-        updateSubmitButton();
-    </script>
-</body>
-</html>
