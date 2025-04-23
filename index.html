@@ -20,6 +20,21 @@
             padding: 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .government-banner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .government-banner img {
+            height: 50px;
+            filter: brightness(0) invert(1);
         }
         
         .logo {
@@ -192,6 +207,26 @@
             border-left: 4px solid #bdc3c7;
         }
         
+        .government-images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            gap: 15px;
+        }
+        
+        .government-images img {
+            width: 150px;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .government-images img:hover {
+            transform: scale(1.05);
+        }
+        
         @media (max-width: 600px) {
             .documents-row {
                 flex-direction: column;
@@ -202,21 +237,40 @@
                 padding: 20px;
                 margin: 20px 10px;
             }
+            
+            .government-banner img {
+                height: 40px;
+            }
+            
+            .government-images img {
+                width: 120px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="logo">
+        <div class="government-banner">
             <img src="https://www.gov.br/static/assets/2021/imagens/logo-governo-federal.png" alt="Governo Federal">
+            <img src="https://www.gov.br/static/assets/2021/imagens/logo-cidadania-governo-federal.png" alt="Cidadania">
+            <img src="https://www.gov.br/static/assets/2021/imagens/logo-brasil.png" alt="Brasil">
+        </div>
+        <div class="logo">
+            <img src="https://www.gov.br/mre/pt-br/delbrasupa/assuntos/brasil/brasil.png/@@images/image.png" alt="Brasão do Brasil">
             <div>
                 <h1>Consulta PIS/PASEP</h1>
-                <p>Verifique seu direito ao benefício</p>
+                <p>Verifique seu direito ao benefício do PIS/PASEP</p>
             </div>
         </div>
     </div>
     
     <div class="container">
+        <div class="government-images">
+            <img src="https://www.gov.br/mre/pt-br/delbrasupa/assuntos/brasil/brasil-3.png/@@images/image.png" alt="Símbolos nacionais">
+            <img src="https://www.gov.br/mre/pt-br/delbrasupa/assuntos/brasil/brasil-2.png/@@images/image.png" alt="Bandeira do Brasil">
+            <img src="https://www.gov.br/mre/pt-br/delbrasupa/assuntos/brasil/brasil-4.png/@@images/image.png" alt="Selo nacional">
+        </div>
+        
         <h2>Informe seus dados para consulta</h2>
         <p>Preencha o formulário abaixo com seus dados pessoais e informações trabalhistas para verificar se você tem direito ao benefício do PIS/PASEP.</p>
         
@@ -464,6 +518,13 @@
                     <p>De acordo com as informações fornecidas, você atende aos requisitos básicos para receber o benefício do PIS/PASEP.</p>
                     <p><strong>Valor estimado:</strong> R$ ${(Math.random() * 500 + 300).toFixed(2)}</p>
                     <p><strong>Próximo passo:</strong> Dirija-se a uma agência da Caixa Econômica Federal (para PIS) ou Banco do Brasil (para PASEP) com seus documentos para confirmar seu direito.</p>
+                    <p><strong>Documentos necessários:</strong></p>
+                    <ul>
+                        <li>Documento de identificação com foto</li>
+                        <li>CPF</li>
+                        <li>Cartão Cidadão ou número do NIS</li>
+                        <li>Comprovante de residência</li>
+                    </ul>
                 `;
             } else {
                 resultadoDiv.className = 'result-container negative-result';
