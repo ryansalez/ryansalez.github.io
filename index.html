@@ -253,6 +253,41 @@
             font-size: 1.5rem;
         }
         
+        .lgpd-info {
+            background-color: rgba(0, 102, 204, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border-left: 4px solid #0066cc;
+            font-size: 0.9rem;
+            text-align: left;
+            margin: 2rem auto;
+            max-width: 900px;
+        }
+        
+        .lgpd-info h3 {
+            color: #0066cc;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .lgpd-info ul {
+            margin-left: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .lgpd-info li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lgpd-article {
+            font-weight: bold;
+            color: #004080;
+        }
+        
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
@@ -281,6 +316,11 @@
                 position: static;
                 margin: 10px auto;
                 justify-content: center;
+            }
+            
+            .lgpd-info {
+                margin: 1rem;
+                padding: 1rem;
             }
         }
     </style>
@@ -418,9 +458,24 @@
         </div>
     </div>
     
+    <div class="lgpd-info">
+        <h3><i class="fas fa-gavel"></i> Proteção de Dados Pessoais - Lei nº 13.709/2018 (LGPD)</h3>
+        <ul>
+            <li><span class="lgpd-article">Art. 6º</span> - Os dados pessoais serão tratados com transparência, segurança e atendendo aos princípios da finalidade, adequação e necessidade</li>
+            <li><span class="lgpd-article">Art. 7º</span> - O tratamento de dados pessoais somente poderá ser realizado mediante consentimento do titular</li>
+            <li><span class="lgpd-article">Art. 18º</span> - O titular dos dados tem direito a acessar, corrigir, eliminar ou portar seus dados pessoais</li>
+            <li><span class="lgpd-article">Art. 46º</span> - Os agentes de tratamento devem adotar medidas de segurança para proteção dos dados</li>
+            <li><span class="lgpd-article">Art. 48º</span> - Notificação obrigatória em caso de incidentes de segurança que possam causar risco aos titulares</li>
+        </ul>
+        <p style="margin-top: 1rem; font-style: italic;">Esta consulta segue os princípios da LGPD e as diretrizes do Decreto nº 10.474/2020 que regulamenta a lei</p>
+    </div>
+    
     <footer class="footer">
         <p>© 2023 Ministério do Trabalho e Previdência - Governo Federal</p>
         <p>Este é um sistema de consulta simulada para fins educacionais</p>
+        <p style="margin-top: 1rem; font-size: 0.8rem;">
+            Em caso de dúvidas sobre proteção de dados: <a href="mailto:protecaodedados@gov.br" style="color: #0066cc;">protecaodedados@gov.br</a>
+        </p>
     </footer>
     
     <script>
@@ -603,6 +658,13 @@
                     <p>De acordo com as informações fornecidas, você atende aos requisitos básicos para receber o benefício do PIS/PASEP.</p>
                     <p><strong>Valor estimado:</strong> R$ ${(Math.random() * 500 + 300).toFixed(2)}</p>
                     <p><strong>Próximo passo:</strong> Dirija-se a uma agência da Caixa Econômica Federal (para PIS) ou Banco do Brasil (para PASEP) com seus documentos para confirmar seu direito.</p>
+                    <p><strong>Documentos necessários:</strong></p>
+                    <ul>
+                        <li>Documento de identificação com foto (RG, CNH ou equivalente)</li>
+                        <li>CPF</li>
+                        <li>Cartão Cidadão ou número do NIS</li>
+                        <li>Comprovante de residência atualizado</li>
+                    </ul>
                 `;
             } else {
                 resultadoDiv.className = 'result-container result-negative';
@@ -612,11 +674,17 @@
                     <p>Com base nas informações fornecidas, você não atende atualmente aos requisitos para receber o benefício.</p>
                     <p><strong>Motivos possíveis:</strong></p>
                     <ul>
-                        <li>Tempo de contribuição insuficiente</li>
-                        <li>Renda acima do limite permitido</li>
+                        <li>Tempo de contribuição insuficiente (mínimo 5 anos de cadastro)</li>
+                        <li>Renda acima do limite permitido (2 salários mínimos)</li>
                         <li>Período de trabalho não registrado adequadamente</li>
+                        <li>Dados inconsistentes no sistema</li>
                     </ul>
-                    <p>Para uma análise mais detalhada, consulte diretamente no site oficial da Caixa ou Banco do Brasil.</p>
+                    <p style="margin-top: 1rem;"><strong>Sugestões:</strong></p>
+                    <ul>
+                        <li>Verifique seus dados no site oficial da Caixa ou Banco do Brasil</li>
+                        <li>Consulte o empregador sobre o envio das informações</li>
+                        <li>Procure a Central de Atendimento do PIS/PASEP</li>
+                    </ul>
                 `;
             }
             
