@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesquisa Governamental - Feira de Ciências</title>
+    <title>Pesquisa Governamental - Satisfação com Serviços Públicos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,9 +39,10 @@
             padding: 20px;
             background-color: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
         }
         
-        h1, h2 {
+        h1, h2, h3 {
             color: #003366;
         }
         
@@ -55,25 +56,53 @@
             font-weight: bold;
         }
         
+        .required:after {
+            content: " *";
+            color: red;
+        }
+        
         input[type="text"],
         input[type="email"],
         input[type="number"],
+        input[type="tel"],
         select,
         textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .documents {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .documents .form-group {
+            flex: 1;
+        }
+        
+        .rating-scale {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .rating-option {
+            text-align: center;
+            flex: 1;
         }
         
         button {
             background-color: #003366;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             cursor: pointer;
             border-radius: 4px;
             font-size: 16px;
+            transition: background-color 0.3s;
         }
         
         button:hover {
@@ -86,6 +115,15 @@
             background-color: #003366;
             color: white;
             font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        .disclaimer {
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
         }
     </style>
 </head>
@@ -94,120 +132,185 @@
         <div class="logo">
             <img src="https://via.placeholder.com/60x60" alt="Brasão do Governo">
             <div>
-                <h1>Ministério da Ciência e Tecnologia</h1>
-                <p>Pesquisa para Feira de Ciências Nacional</p>
+                <h1>Secretaria Nacional de Pesquisas</h1>
+                <p>Pesquisa de Satisfação com Serviços Públicos</p>
             </div>
         </div>
     </div>
     
     <div class="container">
-        <h2>Pesquisa sobre Percepção das Políticas Governamentais</h2>
-        <p>Esta pesquisa faz parte de um projeto científico que será apresentado na Feira Nacional de Ciências. Seus dados nos ajudarão a entender melhor como a população percebe as ações do governo em diversas áreas.</p>
+        <h2>Formulário de Pesquisa</h2>
+        <p>Esta pesquisa tem como objetivo avaliar a qualidade dos serviços públicos oferecidos à população. Sua participação é muito importante para melhorarmos nossos serviços.</p>
         
         <form id="pesquisaForm">
+            <h3>Dados Pessoais</h3>
+            
             <div class="form-group">
-                <label for="idade">Idade:</label>
-                <input type="number" id="idade" name="idade" min="12" max="120" required>
+                <label for="nome_completo" class="required">Nome Completo:</label>
+                <input type="text" id="nome_completo" name="nome_completo" required>
+            </div>
+            
+            <div class="documents">
+                <div class="form-group">
+                    <label for="cpf" class="required">CPF:</label>
+                    <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required
+                           pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: 000.000.000-00">
+                </div>
+                
+                <div class="form-group">
+                    <label for="rg">RG:</label>
+                    <input type="text" id="rg" name="rg" placeholder="00.000.000-0"
+                           pattern="\d{2}\.\d{3}\.\d{3}-\d{1}" title="Formato: 00.000.000-0">
+                </div>
             </div>
             
             <div class="form-group">
-                <label for="genero">Gênero:</label>
-                <select id="genero" name="genero" required>
+                <label for="email" class="required">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000"
+                       pattern="\(\d{2}\) \d{5}-\d{4}" title="Formato: (00) 00000-0000">
+            </div>
+            
+            <h3>Avaliação dos Serviços Públicos</h3>
+            
+            <div class="form-group">
+                <label class="required">1. Qual sua satisfação geral com os serviços públicos?</label>
+                <div class="rating-scale">
+                    <div class="rating-option">
+                        <input type="radio" id="sat1" name="satisfacao_geral" value="1" required>
+                        <label for="sat1">1<br>Péssimo</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="sat2" name="satisfacao_geral" value="2">
+                        <label for="sat2">2<br>Ruim</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="sat3" name="satisfacao_geral" value="3">
+                        <label for="sat3">3<br>Regular</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="sat4" name="satisfacao_geral" value="4">
+                        <label for="sat4">4<br>Bom</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="sat5" name="satisfacao_geral" value="5">
+                        <label for="sat5">5<br>Excelente</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">2. Como avalia a qualidade dos serviços de saúde?</label>
+                <select name="avaliacao_saude" required>
                     <option value="">Selecione...</option>
-                    <option value="feminino">Feminino</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="outro">Outro</option>
-                    <option value="prefiro_nao_dizer">Prefiro não dizer</option>
+                    <option value="1">1 - Péssima</option>
+                    <option value="2">2 - Ruim</option>
+                    <option value="3">3 - Regular</option>
+                    <option value="4">4 - Boa</option>
+                    <option value="5">5 - Excelente</option>
                 </select>
             </div>
             
             <div class="form-group">
-                <label for="escolaridade">Nível de Escolaridade:</label>
-                <select id="escolaridade" name="escolaridade" required>
+                <label class="required">3. Como avalia a qualidade da educação pública?</label>
+                <select name="avaliacao_educacao" required>
                     <option value="">Selecione...</option>
-                    <option value="fundamental_incompleto">Fundamental Incompleto</option>
-                    <option value="fundamental_completo">Fundamental Completo</option>
-                    <option value="medio_incompleto">Médio Incompleto</option>
-                    <option value="medio_completo">Médio Completo</option>
-                    <option value="superior_incompleto">Superior Incompleto</option>
-                    <option value="superior_completo">Superior Completo</option>
-                    <option value="pos_graduacao">Pós-graduação</option>
+                    <option value="1">1 - Péssima</option>
+                    <option value="2">2 - Ruim</option>
+                    <option value="3">3 - Regular</option>
+                    <option value="4">4 - Boa</option>
+                    <option value="5">5 - Excelente</option>
                 </select>
             </div>
             
             <div class="form-group">
-                <label for="regiao">Região do País:</label>
-                <select id="regiao" name="regiao" required>
+                <label class="required">4. Como avalia a infraestrutura urbana (ruas, iluminação, etc.)?</label>
+                <select name="avaliacao_infraestrutura" required>
                     <option value="">Selecione...</option>
-                    <option value="norte">Norte</option>
-                    <option value="nordeste">Nordeste</option>
-                    <option value="centro_oeste">Centro-Oeste</option>
-                    <option value="sudeste">Sudeste</option>
-                    <option value="sul">Sul</option>
-                </select>
-            </div>
-            
-            <h3>Percepção sobre Políticas Governamentais</h3>
-            <p>Em uma escala de 1 a 5, onde 1 é "Discordo Totalmente" e 5 é "Concordo Totalmente", avalie as seguintes afirmações:</p>
-            
-            <div class="form-group">
-                <label>1. O governo investe adequadamente em educação:</label>
-                <select name="educacao" required>
-                    <option value="">Selecione...</option>
-                    <option value="1">1 - Discordo Totalmente</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 - Concordo Totalmente</option>
+                    <option value="1">1 - Péssima</option>
+                    <option value="2">2 - Ruim</option>
+                    <option value="3">3 - Regular</option>
+                    <option value="4">4 - Boa</option>
+                    <option value="5">5 - Excelente</option>
                 </select>
             </div>
             
             <div class="form-group">
-                <label>2. O governo investe adequadamente em saúde:</label>
-                <select name="saude" required>
-                    <option value="">Selecione...</option>
-                    <option value="1">1 - Discordo Totalmente</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 - Concordo Totalmente</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>3. O governo investe adequadamente em ciência e tecnologia:</label>
-                <select name="ciencia" required>
-                    <option value="">Selecione...</option>
-                    <option value="1">1 - Discordo Totalmente</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 - Concordo Totalmente</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="sugestoes">Sugestões para melhorias nas políticas governamentais:</label>
-                <textarea id="sugestoes" name="sugestoes" rows="4"></textarea>
+                <label for="sugestoes">5. Quais melhorias você sugeriria para os serviços públicos?</label>
+                <textarea id="sugestoes" name="sugestoes" rows="4" placeholder="Descreva suas sugestões..."></textarea>
             </div>
             
             <div class="form-group">
                 <button type="submit">Enviar Respostas</button>
             </div>
+            
+            <div class="disclaimer">
+                <p><strong>Termos de Uso:</strong> Estas informações serão utilizadas exclusivamente para fins estatísticos e de melhoria dos serviços públicos. Seus dados pessoais serão protegidos conforme a Lei Geral de Proteção de Dados (LGPD).</p>
+            </div>
         </form>
     </div>
     
     <div class="footer">
-        <p>© 2023 Ministério da Ciência e Tecnologia - Todos os direitos reservados</p>
-        <p>Esta pesquisa é parte de um projeto científico escolar e não representa uma pesquisa oficial do governo.</p>
+        <p>© 2023 Governo Federal - Secretaria Nacional de Pesquisas</p>
+        <p>Este é um projeto acadêmico e não representa uma pesquisa oficial do governo</p>
     </div>
     
     <script>
         document.getElementById('pesquisaForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Obrigado por participar da pesquisa! Seus dados foram registrados e serão utilizados para fins científicos.');
-            // Aqui você pode adicionar código para enviar os dados para um servidor
+            
+            // Validação básica
+            const cpf = document.getElementById('cpf').value;
+            if (!validarCPF(cpf)) {
+                alert('Por favor, insira um CPF válido no formato 000.000.000-00');
+                return;
+            }
+            
+            // Coletar dados
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => data[key] = value);
+            
+            console.log("Dados coletados:", data);
+            alert('Obrigado por participar da pesquisa! Suas respostas foram registradas.');
             this.reset();
+            
+            // Aqui você pode adicionar código para enviar os dados para um servidor
+            // Exemplo: enviarParaServidor(data);
+        });
+        
+        function validarCPF(cpf) {
+            // Validação simples de formato
+            return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
+        }
+        
+        // Máscaras para CPF, RG e Telefone
+        document.getElementById('cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 3) value = value.replace(/^(\d{3})/, '$1.');
+            if (value.length > 7) value = value.replace(/^(\d{3}\.)(\d{3})/, '$1$2.');
+            if (value.length > 11) value = value.replace(/^(\d{3}\.\d{3}\.)(\d{3})/, '$1$2-');
+            e.target.value = value.substring(0, 14);
+        });
+        
+        document.getElementById('rg').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) value = value.replace(/^(\d{2})/, '$1.');
+            if (value.length > 6) value = value.replace(/^(\d{2}\.)(\d{3})/, '$1$2.');
+            if (value.length > 10) value = value.replace(/^(\d{2}\.\d{3}\.)(\d{3})/, '$1$2-');
+            e.target.value = value.substring(0, 12);
+        });
+        
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) value = value.replace(/^(\d{0,2})/, '($1');
+            if (value.length > 3) value = value.replace(/^(\(\d{2})/, '$1) ');
+            if (value.length > 10) value = value.replace(/^(\(\d{2}\) \d{5})/, '$1-');
+            e.target.value = value.substring(0, 15);
         });
     </script>
 </body>
