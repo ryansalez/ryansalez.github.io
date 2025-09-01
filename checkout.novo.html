@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Checkout — EletroPrime</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <script defer src="app.js"></script>
+    <style>
+        /* Estilos consistentes com as páginas anteriores */
+        .checkout-container {
+            padding: 20px 0;
+        }
+        
+        .checkout-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .checkout-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+            padding: 0 40px;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .step-icon.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 14px;
+            color: var(--muted);
+            text-align: center;
+        }
+        
+        .step-label.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            align-items: start;
+        }
+        
+        .checkout-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .checkout-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .edit-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .payment-method {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary);
+        }
+        
+        .payment-method.selected {
+            border-color: var(--primary);
+            background: rgba(74, 144, 226, 0.05);
+        }
+        
+        .payment-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .payment-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .card-input-group {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .card-input-group > div {
+            flex: 1;
+        }
+        
+        .summary-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 16px 0;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .secure-checkout {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--muted);
+            justify-content: center;
+        }
+        
+        .pix-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .pix-qr {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .pix-qr img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .pix-instructions {
+            background: rgba(74, 144, 226, 0.05);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        
+        .boleto-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .boleto-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        
+        .boleto-info {
+            background: rgba(74, 144, 226, 0.05);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 14px;
+            text-align: left;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 968px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .checkout-progress {
+                padding: 0 20px;
+            }
+            
+            .step-label {
+                font-size: 12px;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-page="checkout">
+<header>
+    <div class="container nav">
+        <div style="display:flex;align-items:center;gap:12px">
+            <button id="hamb" class="hamburger btn" aria-label="menu">☰</button>
+            <a class="logo" href="index.html"><img src="assets/logo.svg" alt="EletroPrime"/><span style="font-size:14px">EletroPrime</span></a>
+        </div>
+        <div class="search"><input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar"/></div>
+        <div class="toolbar" style="margin-left:12px">
+            <a class="btn" href="pedidos.html">Pedidos</a>
+            <a class="btn" href="carrinho.html">🛒 <span data-cart-count>0</span></a>
+            <span data-auth-area></span>
+            <button id="theme-toggle" class="btn">🌓</button>
+        </div>
+    </div>
+    <div id="mobileNav" class="hidden" style="background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:10px 16px;border-top:1px solid rgba(255,255,255,0.02)">
+        <a class="btn" href="index.html">Início</a> <a class="btn" href="admin.html">Admin</a> <a class="btn" href="login.html">Entrar</a>
+    </div>
+</header>
+
+<main class="container checkout-container">
+    <div class="checkout-header">
+        <a href="carrinho.html" class="btn" style="display:flex;align-items:center;gap:6px">←</a>
+        <h2>Finalizar Compra</h2>
+    </div>
+    
+    <div class="checkout-progress">
+        <div class="progress-bar">
+            <div class="progress-bar-fill" style="width: 33%"></div>
+        </div>
+        <div class="progress-step">
+            <div class="step-icon active">1</div>
+            <div class="step-label active">Pagamento</div>
+        </div>
+        <div class="progress-step">
+            <div class="step-icon">2</div>
+            <div class="step-label">Revisão</div>
+        </div>
+        <div class="progress-step">
+            <div class="step-icon">3</div>
+            <div class="step-label">Confirmação</div>
+        </div>
+    </div>
+
+    <div class="checkout-grid">
+        <div class="checkout-content">
+            <div class="checkout-section">
+                <div class="section-header">
+                    <h3 class="section-title">Forma de Pagamento</h3>
+                </div>
+                
+                <div class="payment-methods">
+                    <div class="payment-method selected" data-method="card">
+                        <div class="payment-icon">💳</div>
+                        <div class="payment-label">Cartão</div>
+                    </div>
+                    <div class="payment-method" data-method="pix">
+                        <div class="payment-icon">📱</div>
+                        <div class="payment-label">PIX</div>
+                    </div>
+                    <div class="payment-method" data-method="boleto">
+                        <div class="payment-icon">📄</div>
+                        <div class="payment-label">Boleto</div>
+                    </div>
+                </div>
+                
+                <!-- Formulário de Cartão de Crédito -->
+                <div id="card-form" class="payment-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome do Titular</label>
+                            <input name="card_name" required placeholder="Nome como no cartão"/>
+                        </div>
+                        <div class="form-group">
+                            <label>CPF do Titular</label>
+                            <input name="card_cpf" required placeholder="000.000.000-00"/>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Número do cartão</label>
+                        <input name="card_number" required placeholder="0000 0000 0000 0000"/>
+                    </div>
+                    
+                    <div class="card-input-group">
+                        <div class="form-group">
+                            <label>Validade</label>
+                            <input name="card_expiry" placeholder="MM/AA"/>
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input name="card_cvv" placeholder="CVV"/>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Parcelas</label>
+                        <select name="installments">
+                            <option value="1">1x de R$ 100,00 sem juros</option>
+                            <option value="2">2x de R$ 50,00 sem juros</option>
+                            <option value="3">3x de R$ 33,33 sem juros</option>
+                            <option value="4">4x de R$ 25,00 sem juros</option>
+                            <option value="5">5x de R$ 20,00 sem juros</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Formulário PIX -->
+                <div id="pix-form" class="payment-form hidden">
+                    <div class="pix-container">
+                        <div class="pix-qr">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=chave-pix-aleatoria" alt="PIX QR Code"/>
+                        </div>
+                        <p>Escaneie o QR Code acima para pagar com PIX</p>
+                        
+                        <div class="pix-instructions">
+                            <p><strong>Instruções:</strong></p>
+                            <ol style="text-align:left;padding-left:20px;margin-top:8px">
+                                <li>Abra seu app do banco</li>
+                                <li>Selecione a opção PIX</li>
+                                <li>Escaneie o código QR</li>
+                                <li>Confirme o pagamento</li>
+                            </ol>
+                        </div>
+                        
+                        <p>Pagamento aprovado instantaneamente</p>
+                    </div>
+                </div>
+                
+                <!-- Formulário Boleto -->
+                <div id="boleto-form" class="payment-form hidden">
+                    <div class="boleto-container">
+                        <p>Gere um boleto bancário para pagar em qualquer agência ou internet banking</p>
+                        
+                        <button class="boleto-btn">Gerar Boleto</button>
+                        
+                        <div class="boleto-info">
+                            <p><strong>Informações importantes:</strong></p>
+                            <ul style="text-align:left;padding-left:20px;margin-top:8px">
+                                <li>O boleto tem validade de 1 dia útil</li>
+                                <li>Seu pedido será confirmado após a compensação do pagamento</li>
+                                <li>Prazo de compensação: até 3 dias úteis</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="checkout-section">
+                <div class="section-header">
+                    <h3 class="section-title">Endereço de Entrega</h3>
+                    <button class="edit-btn">Alterar</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>Endereço</label>
+                    <input name="address" required placeholder="Rua, Número, Bairro"/>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cidade</label>
+                        <input name="city" required placeholder="Sua cidade"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select name="state">
+                            <option value="">Selecione</option>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PR">Paraná</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="TO">Tocantins</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>CEP</label>
+                    <input name="zip" placeholder="00000-000"/>
+                </div>
+                
+                <div class="form-group">
+                    <label>Complemento (opcional)</label>
+                    <input name="complement" placeholder="Apartamento, bloco, referência..."/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="checkout-summary">
+            <div class="summary-card">
+                <h3>Resumo do Pedido</h3>
+                
+                <div id="resumo">
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span>R$ 299,97</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Frete</span>
+                        <span>R$ 15,90</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Desconto</span>
+                        <span style="color:#28a745">- R$ 30,00</span>
+                    </div>
+                </div>
+                
+                <div class="summary-total">
+                    <div class="summary-item">
+                        <span>Total</span>
+                        <span id="total">R$ 285,87</span>
+                    </div>
+                </div>
+                
+                <button id="finalizar" class="checkout-btn">
+                    Finalizar Pedido ›
+                </button>
+                
+                <div class="secure-checkout">
+                    🔒 Compra segura e protegida
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:10px">
+                <img src="assets/logo.svg" style="height:28px"/>
+                <div>© <span id="year"></span> EletroPrime</div>
+            </div>
+            <div style="color:var(--muted)"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        
+        // Alternar entre métodos de pagamento
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // Remover seleção anterior
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                document.querySelectorAll('.payment-form').forEach(form => form.classList.add('hidden'));
+                
+                // Adicionar seleção atual
+                this.classList.add('selected');
+                
+                // Mostrar formulário correspondente
+                const methodType = this.getAttribute('data-method');
+                document.getElementById(`${methodType}-form`).classList.remove('hidden');
+            });
+        });
+    </script>
+</footer>
+</body>
+</html>

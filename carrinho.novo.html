@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Carrinho — EletroPrime</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <script defer src="app.js"></script>
+    <style>
+        /* Estilos específicos para o carrinho */
+        .cart-container {
+            padding: 20px 0;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .cart-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .cart-title h2 {
+            margin: 0;
+        }
+        
+        .cart-content {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            align-items: start;
+        }
+        
+        .cart-items {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .cart-summary {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cart-item-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .cart-item-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .cart-item-brand {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .cart-item-price {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .cart-item-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            border-radius: 6px;
+            padding: 4px;
+        }
+        
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+        }
+        
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .cart-summary-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .summary-total {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 16px 0;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .discount-code {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        
+        .discount-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+        
+        .empty-cart-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .continue-shopping {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .secure-checkout {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--muted);
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                grid-template-rows: auto auto;
+            }
+            
+            .cart-item-controls {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                align-items: center;
+                margin-top: 12px;
+            }
+        }
+    </style>
+</head>
+<body data-page="carrinho">
+<header>
+    <div class="container nav">
+        <div style="display:flex;align-items:center;gap:12px">
+            <button id="hamb" class="hamburger btn" aria-label="menu">☰</button>
+            <a class="logo" href="index.html"><img src="assets/logo.svg" alt="EletroPrime"/><span style="font-size:14px">EletroPrime</span></a>
+        </div>
+        <div class="search"><input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar"/></div>
+        <div class="toolbar" style="margin-left:12px">
+            <a class="btn" href="pedidos.html">Pedidos</a>
+            <a class="btn" href="carrinho.html">🛒 <span data-cart-count>0</span></a>
+            <span data-auth-area></span>
+        </div>
+    </div>
+    <div id="mobileNav" class="hidden" style="background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:10px 16px;border-top:1px solid rgba(255,255,255,0.02)">
+        <a class="btn" href="index.html">Início</a> <a class="btn" href="admin.html">Admin</a> <a class="btn" href="login.html">Entrar</a>
+    </div>
+</header>
+
+<main class="container cart-container">
+    <div class="cart-header">
+        <div class="cart-title">
+            <h2>Seu Carrinho</h2>
+            <span class="badge" id="cart-count-badge">0 itens</span>
+        </div>
+        <a href="index.html" class="btn">← Continuar Comprando</a>
+    </div>
+
+    <div id="cart-with-items">
+        <div class="cart-content">
+            <div class="cart-items">
+                <div id="cart-body">
+                    <!-- Itens do carrinho serão inseridos aqui via JavaScript -->
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <h3>Seu carrinho está vazio</h3>
+                        <p>Adicione produtos para continuar com a compra</p>
+                        <a href="index.html" class="continue-shopping">Continuar Comprando</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="cart-summary-title">Resumo do Pedido</div>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">R$ 0,00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Frete</span>
+                    <span id="shipping">R$ 0,00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Desconto</span>
+                    <span id="discount">- R$ 0,00</span>
+                </div>
+                
+                <div class="discount-code">
+                    <input type="text" class="discount-input" placeholder="Cupom de desconto">
+                    <button class="btn">Aplicar</button>
+                </div>
+                
+                <div class="summary-total">
+                    <div class="summary-row">
+                        <span>Total</span>
+                        <span id="cart-total">R$ 0,00</span>
+                    </div>
+                </div>
+                
+                <button id="checkout-btn" class="checkout-btn">
+                    Finalizar Compra →
+                </button>
+                
+                <div class="secure-checkout">
+                    🔒 Compra segura e protegida
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:10px">
+                <img src="assets/logo.svg" style="height:28px"/>
+                <div>© <span id="year"></span> EletroPrime</div>
+            </div>
+            <div style="color:var(--muted)">Loja demo • sem cobrança real</div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        
+        // Simulação de itens no carrinho (será substituído pelo JavaScript real)
+        function updateCartUI() {
+            const cartCount = 0; // Será atualizado pelo app.js
+            document.getElementById('cart-count-badge').textContent = cartCount + ' itens';
+            
+            if (cartCount > 0) {
+                document.querySelector('.empty-cart').style.display = 'none';
+            } else {
+                document.querySelector('.empty-cart').style.display = 'block';
+            }
+        }
+        
+        // Inicializar a UI do carrinho
+        updateCartUI();
+    </script>
+</footer>
+</body>
+</html>

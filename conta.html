@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minha Conta — EletroPrime</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="app.js"></script>
+</head>
+<body data-page="conta">
+  <header>
+    <div class="container nav">
+      <div class="flex gap-sm">
+        <button id="hamb" class="hamburger btn icon-only" aria-label="menu">☰</button>
+        <a class="logo" href="index.html">
+          <img src="assets/logo.svg" alt="EletroPrime" />
+          <span>EletroPrime</span>
+        </a>
+      </div>
+      <div class="search">
+        <input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar" />
+      </div>
+      <div class="toolbar">
+        <a class="btn icon-only" href="pedidos.html" aria-label="Pedidos">
+          📦
+        </a>
+        <a class="btn icon-only" href="carrinho.html" aria-label="Carrinho">
+          🛒 <span data-cart-count>0</span>
+        </a>
+        <span data-auth-area></span>
+        <button id="theme-toggle" class="btn icon-only" aria-label="Alternar tema">🌓</button>
+      </div>
+    </div>
+    <div id="mobileNav" class="hidden" style="background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding: var(--spacing-sm) var(--spacing-md); border-top: 1px solid var(--border);">
+      <div class="flex gap-md" style="flex-wrap: wrap">
+        <a class="btn" href="index.html">Início</a>
+        <a class="btn" href="admin.html">Admin</a>
+        <a class="btn" href="login.html">Entrar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="mb-lg">
+      <a href="index.html">Início</a> / Minha Conta
+    </nav>
+
+    <h1 class="mt-0 mb-xl">Minha Conta</h1>
+
+    <div class="grid" style="grid-template-columns: 250px 1fr; gap: var(--spacing-xl); align-items: start;">
+      <!-- Sidebar Navigation -->
+      <div class="card">
+        <div class="body">
+          <div class="flex-column gap-sm">
+            <button class="btn pill active" data-tab="profile">Perfil</button>
+            <button class="btn pill" data-tab="address">Endereços</button>
+            <button class="btn pill" data-tab="password">Alterar Senha</button>
+            <button class="btn pill" data-tab="orders">Meus Pedidos</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div>
+        <!-- Profile Tab -->
+        <div id="profile-tab" class="card">
+          <div class="body">
+            <h2 class="mt-0 mb-lg">Informações Pessoais</h2>
+            
+            <form id="profile-form" class="form-group">
+              <div class="form-group">
+                <label for="name">Nome completo</label>
+                <input type="text" id="name" name="name" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Telefone</label>
+                <input type="tel" id="phone" name="phone" placeholder="(00) 00000-0000" />
+              </div>
+              
+              <div class="form-group">
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" />
+              </div>
+              
+              <div class="flex gap-md mt-lg">
+                <button class="btn primary" type="submit">Salvar Alterações</button>
+                <button class="btn" type="button">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Address Tab -->
+        <div id="address-tab" class="card hidden">
+          <div class="body">
+            <div class="flex-between mb-lg">
+              <h2 class="mt-0 mb-0">Meus Endereços</h2>
+              <button class="btn primary">Adicionar Endereço</button>
+            </div>
+            
+            <div class="card mb-md">
+              <div class="body">
+                <div class="flex-between mb-md">
+                  <h3 class="mt-0 mb-0">Endereço Principal</h3>
+                  <div class="flex gap-sm">
+                    <button class="btn small">Editar</button>
+                    <button class="btn small danger">Excluir</button>
+                  </div>
+                </div>
+                <p class="mb-0">
+                  <strong>João Silva</strong><br>
+                  Rua das Flores, 123<br>
+                  Centro, São Paulo - SP<br>
+                  CEP: 01000-000<br>
+                  (11) 99999-9999
+                </p>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="body">
+                <div class="flex-between mb-md">
+                  <h3 class="mt-0 mb-0">Endereço Secundário</h3>
+                  <div class="flex gap-sm">
+                    <button class="btn small">Editar</button>
+                    <button class="btn small danger">Excluir</button>
+                  </div>
+                </div>
+                <p class="mb-0">
+                  <strong>João Silva</strong><br>
+                  Av. Paulista, 1000<br>
+                  Bela Vista, São Paulo - SP<br>
+                  CEP: 01310-100<br>
+                  (11) 98888-8888
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Tab -->
+        <div id="password-tab" class="card hidden">
+          <div class="body">
+            <h2 class="mt-0 mb-lg">Alterar Senha</h2>
+            
+            <form id="password-form" class="form-group">
+              <div class="form-group">
+                <label for="current_password">Senha atual</label>
+                <input type="password" id="current_password" name="current_password" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="new_password">Nova senha</label>
+                <input type="password" id="new_password" name="new_password" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="confirm_password">Confirmar nova senha</label>
+                <input type="password" id="confirm_password" name="confirm_password" required />
+              </div>
+              
+              <div class="flex gap-md mt-lg">
+                <button class="btn primary" type="submit">Alterar Senha</button>
+                <button class="btn" type="button">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div id="orders-tab" class="card hidden">
+          <div class="body">
+            <h2 class="mt-0 mb-lg">Histórico de Pedidos</h2>
+            
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Pedido</th>
+                    <th>Data</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#PED12345</td>
+                    <td>15/05/2023</td>
+                    <td>R$ 1.299,90</td>
+                    <td><span class="badge success">Entregue</span></td>
+                    <td><a href="pedido.html?id=12345" class="btn small">Ver detalhes</a></td>
+                  </tr>
+                  <tr>
+                    <td>#PED12346</td>
+                    <td>22/05/2023</td>
+                    <td>R$ 2.499,90</td>
+                    <td><span class="badge warning">Em trânsito</span></td>
+                    <td><a href="pedido.html?id=12346" class="btn small">Ver detalhes</a></td>
+                  </tr>
+                  <tr>
+                    <td>#PED12347</td>
+                    <td>30/05/2023</td>
+                    <td>R$ 899,90</td>
+                    <td><span class="badge primary">Processando</span></td>
+                    <td><a href="pedido.html?id=12347" class="btn small">Ver detalhes</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="flex-between" style="flex-wrap: wrap; gap: var(--spacing-md);">
+        <div class="flex gap-sm">
+          <img src="assets/logo.svg" style="height: 32px;" alt="EletroPrime" />
+          <div>© <span id="year"></span> EletroPrime</div>
+        </div>
+        <div class="text-muted">Loja demo • sem cobrança real</div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      
+      // Tab switching
+      const tabButtons = document.querySelectorAll('[data-tab]');
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const tab = btn.getAttribute('data-tab');
+          document.getElementById('profile-tab').classList.toggle('hidden', tab !== 'profile');
+          document.getElementById('address-tab').classList.toggle('hidden', tab !== 'address');
+          document.getElementById('password-tab').classList.toggle('hidden', tab !== 'password');
+          document.getElementById('orders-tab').classList.toggle('hidden', tab !== 'orders');
+        });
+      });
+    </script>
+  </footer>
+</body>
+</html>

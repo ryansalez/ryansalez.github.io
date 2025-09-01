@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Admin — EletroPrime</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <script defer src="app.js"></script>
+    <style>
+        /* Estilos específicos para o admin */
+        .admin-dashboard {
+            padding: 20px 0;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 8px 0;
+        }
+        
+        .stat-label {
+            color: var(--muted);
+            font-size: 14px;
+        }
+        
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        
+        .form-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .products-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #bb2d3b;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .btn-warning:hover {
+            background: #ffca2c;
+        }
+        
+        .image-preview {
+            width: 100%;
+            height: 120px;
+            background: var(--bg);
+            border-radius: 8px;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .search-box {
+            margin-bottom: 16px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 16px 0;
+        }
+        
+        .tab-navigation {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+        
+        .tab-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text);
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body data-page="admin">
+<header>
+    <div class="container nav">
+        <div style="display:flex;align-items:center;gap:12px">
+            <button id="hamb" class="hamburger btn" aria-label="menu">☰</button>
+            <a class="logo" href="index.html"><img src="assets/logo.svg" alt="EletroPrime"/><span style="font-size:14px">EletroPrime</span></a>
+        </div>
+        <div class="search"><input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar"/></div>
+        <div class="toolbar" style="margin-left:12px">
+            <a class="btn" href="pedidos.html">Pedidos</a>
+            <a class="btn" href="carrinho.html">🛒 <span data-cart-count>0</span></a>
+            <span data-auth-area></span>
+            <button id="theme-toggle" class="btn">🌓</button>
+        </div>
+    </div>
+    <div id="mobileNav" class="hidden" style="background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:10px 16px;border-top:1px solid rgba(255,255,255,0.02)">
+        <a class="btn" href="index.html">Início</a> <a class="btn" href="admin.html">Admin</a> <a class="btn" href="login.html">Entrar</a>
+    </div>
+</header>
+
+<main class="container admin-dashboard">
+    <div id="admin-login" class="auth-container">
+        <div class="auth-card">
+            <h2>Acesso Administrativo</h2>
+            <form id="admin-login-form" class="form">
+                <div class="form-group">
+                    <label for="admin-email">E-mail</label>
+                    <input id="admin-email" name="email" type="email" required />
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha</label>
+                    <input id="admin-password" name="password" type="password" required />
+                </div>
+                <div style="margin-top:16px">
+                    <button class="btn primary" type="submit" style="width:100%">Entrar no Painel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-content" class="hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+            <div>
+                <h2>Painel de Controle</h2>
+                <p style="color:var(--muted);margin-top:4px">Bem-vindo ao centro de gerenciamento da EletroPrime</p>
+            </div>
+            <button id="logout-btn" class="btn">Sair</button>
+        </div>
+
+        <div class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-label">Total de Produtos</div>
+                <div class="stat-value" id="total-products">0</div>
+                <div class="stat-desc">Cadastrados no sistema</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pedidos Hoje</div>
+                <div class="stat-value" id="today-orders">0</div>
+                <div class="stat-desc">Realizados nas últimas 24h</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Usuários Online</div>
+                <div class="stat-value" id="online-users">0</div>
+                <div class="stat-desc">Navegando agora</div>
+            </div>
+        </div>
+
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="products">Gerenciar Produtos</button>
+            <button class="tab-btn" data-tab="orders">Pedidos</button>
+            <button class="tab-btn" data-tab="users">Usuários</button>
+        </div>
+
+        <div class="tab-content active" id="tab-products">
+            <div class="admin-grid">
+                <div class="form-section">
+                    <h3>Adicionar Novo Produto</h3>
+                    <form id="form-add" class="form-group" style="margin-top:16px">
+                        <label>Nome do Produto</label>
+                        <input name="name" required placeholder="Ex: Smartphone Galaxy S23"/>
+                        
+                        <label>Marca</label>
+                        <input name="brand" required placeholder="Ex: Samsung"/>
+                        
+                        <label>Categoria</label>
+                        <select name="category" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="smartphones">Smartphones</option>
+                            <option value="notebooks">Notebooks</option>
+                            <option value="tv">TVs</option>
+                            <option value="audio">Áudio</option>
+                            <option value="eletrodomesticos">Eletrodomésticos</option>
+                        </select>
+                        
+                        <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+                            <div>
+                                <label>Preço (R$)</label>
+                                <input name="price" required type="number" step="0.01" placeholder="0,00"/>
+                            </div>
+                            <div>
+                                <label>Preço Antigo (R$)</label>
+                                <input name="oldPrice" type="number" step="0.01" placeholder="0,00"/>
+                            </div>
+                        </div>
+                        
+                        <label>Imagem do Produto</label>
+                        <input name="image" type="file" accept="image/*" id="image-upload"/>
+                        
+                        <div class="image-preview" id="image-preview">
+                            <span style="color:var(--muted)">Prévia da imagem</span>
+                        </div>
+                        
+                        <label>ou URL da Imagem</label>
+                        <input name="imageUrl" type="text" placeholder="https://exemplo.com/imagem.jpg"/>
+                        
+                        <label>Descrição</label>
+                        <textarea name="description" rows="4" placeholder="Descreva as características do produto..."></textarea>
+                        
+                        <div style="margin-top:16px">
+                            <button class="btn primary" type="submit" style="width:100%">
+                                ➕ Adicionar Produto
+                            </button>
+                            <button id="import-btn" class="btn" type="button" style="width:100%;margin-top:8px">
+                                🔄 Restaurar Catálogo Padrão
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="products-section">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                        <h3>Produtos Cadastrados</h3>
+                        <div class="search-box">
+                            <input type="text" placeholder="Buscar produto..." style="padding:8px 12px;width:200px"/>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Produto</th>
+                                    <th>Marca</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-body">
+                                <tr>
+                                    <td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">
+                                        Carregando produtos...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination">
+                        <button class="btn btn-sm">← Anterior</button>
+                        <button class="btn btn-sm primary">1</button>
+                        <button class="btn btn-sm">2</button>
+                        <button class="btn btn-sm">3</button>
+                        <button class="btn btn-sm">Próximo →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab-orders">
+            <div class="card">
+                <h3>Gerenciamento de Pedidos</h3>
+                <p style="color:var(--muted);margin:8px 0 16px 0">
+                    Visualize e gerencie todos os pedidos realizados na loja.
+                </p>
+                <div style="text-align:center;padding:40px;color:var(--muted)">
+                    <p>⏳ Funcionalidade em desenvolvimento</p>
+                    <p>Em breve você poderá gerenciar pedidos aqui</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab-users">
+            <div class="card">
+                <h3>Gerenciamento de Usuários</h3>
+                <p style="color:var(--muted);margin:8px 0 16px 0">
+                    Administre contas de usuários e permissões de acesso.
+                </p>
+                <div style="text-align:center;padding:40px;color:var(--muted)">
+                    <p>⏳ Funcionalidade em desenvolvimento</p>
+                    <p>Em breve você poderá gerenciar usuários aqui</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:10px">
+                <img src="assets/logo.svg" style="height:28px"/>
+                <div>© <span id="year"></span> EletroPrime - Painel Administrativo</div>
+            </div>
+            <div style="color:var(--muted);font-size:12px">
+                v1.2.0 | Último acesso: <span id="last-access">--:--</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('last-access').textContent = new Date().toLocaleString();
+        
+        // Script para as abas
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove a classe active de todos os botões e conteúdos
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Adiciona a classe active ao botão clicado
+                button.classList.add('active');
+                
+                // Mostra o conteúdo correspondente
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+            });
+        });
+        
+        // Preview de imagem
+        document.getElementById('image-upload')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview"/>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</footer>
+</body>
+</html>

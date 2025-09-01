@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrinho — EletroPrime</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="app.js"></script>
+</head>
+<body data-page="carrinho">
+  <header>
+    <div class="container nav">
+      <div class="flex gap-sm">
+        <button id="hamb" class="hamburger btn icon-only" aria-label="menu">☰</button>
+        <a class="logo" href="index.html">
+          <img src="assets/logo.svg" alt="EletroPrime" />
+          <span>EletroPrime</span>
+        </a>
+      </div>
+      <div class="search">
+        <input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar" />
+      </div>
+      <div class="toolbar">
+        <a class="btn icon-only" href="pedidos.html" aria-label="Pedidos">
+          📦
+        </a>
+        <a class="btn icon-only" href="carrinho.html" aria-label="Carrinho">
+          🛒 <span data-cart-count>0</span>
+        </a>
+        <span data-auth-area></span>
+        <button id="theme-toggle" class="btn icon-only" aria-label="Alternar tema">🌓</button>
+      </div>
+    </div>
+    <div id="mobileNav" class="hidden" style="background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding: var(--spacing-sm) var(--spacing-md); border-top: 1px solid var(--border);">
+      <div class="flex gap-md" style="flex-wrap: wrap">
+        <a class="btn" href="index.html">Início</a>
+        <a class="btn" href="admin.html">Admin</a>
+        <a class="btn" href="login.html">Entrar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="mb-lg">
+      <a href="index.html">Início</a> / Carrinho
+    </nav>
+
+    <div class="flex-between mb-xl">
+      <h1 class="mt-0 mb-0">Seu Carrinho</h1>
+      <a href="index.html" class="btn">
+        ← Continuar Comprando
+      </a>
+    </div>
+
+    <div class="grid checkout">
+      <!-- Cart Items -->
+      <div>
+        <div class="card">
+          <div class="body">
+            <div id="cart-body">
+              <!-- Cart items will be populated by JavaScript -->
+              <div class="text-center p-lg">
+                <div style="font-size: 4rem; margin-bottom: var(--spacing-md);">🛒</div>
+                <h3>Seu carrinho está vazio</h3>
+                <p class="text-muted mb-lg">Adicione produtos para continuar com a compra</p>
+                <a href="index.html" class="btn primary">Continuar Comprando</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div>
+        <div class="card mb-lg">
+          <div class="body">
+            <h3 class="mt-0 mb-lg">Resumo do Pedido</h3>
+            
+            <div class="flex-between mb-md">
+              <span>Subtotal</span>
+              <span id="subtotal">R$ 0,00</span>
+            </div>
+            
+            <div class="flex-between mb-md">
+              <span>Frete</span>
+              <span id="shipping">Grátis</span>
+            </div>
+            
+            <div class="flex-between mb-md">
+              <span>Desconto</span>
+              <span id="discount">- R$ 0,00</span>
+            </div>
+            
+            <div class="flex-between mb-md">
+              <span><strong>Total</strong></span>
+              <span id="cart-total" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--primary);">R$ 0,00</span>
+            </div>
+            
+            <button id="checkout-btn" class="btn primary large" style="width: 100%; margin-top: var(--spacing-lg);">
+              Finalizar Compra
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="body">
+            <h3 class="mt-0 mb-lg">Cupom de Desconto</h3>
+            <div class="flex gap-sm">
+              <input type="text" placeholder="Digite seu cupom" style="flex: 1;" />
+              <button class="btn">Aplicar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="flex-between" style="flex-wrap: wrap; gap: var(--spacing-md);">
+        <div class="flex gap-sm">
+          <img src="assets/logo.svg" style="height: 32px;" alt="EletroPrime" />
+          <div>© <span id="year"></span> EletroPrime</div>
+        </div>
+        <div class="text-muted">Loja demo • sem cobrança real</div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </footer>
+</body>
+</html>

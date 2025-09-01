@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout — EletroPrime</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="app.js"></script>
+</head>
+<body data-page="checkout">
+  <header>
+    <div class="container nav">
+      <div class="flex gap-sm">
+        <button id="hamb" class="hamburger btn icon-only" aria-label="menu">☰</button>
+        <a class="logo" href="index.html">
+          <img src="assets/logo.svg" alt="EletroPrime" />
+          <span>EletroPrime</span>
+        </a>
+      </div>
+      <div class="search">
+        <input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar" />
+      </div>
+      <div class="toolbar">
+        <a class="btn icon-only" href="pedidos.html" aria-label="Pedidos">
+          📦
+        </a>
+        <a class="btn icon-only" href="carrinho.html" aria-label="Carrinho">
+          🛒 <span data-cart-count>0</span>
+        </a>
+        <span data-auth-area></span>
+        <button id="theme-toggle" class="btn icon-only" aria-label="Alternar tema">🌓</button>
+      </div>
+    </div>
+    <div id="mobileNav" class="hidden" style="background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding: var(--spacing-sm) var(--spacing-md); border-top: 1px solid var(--border);">
+      <div class="flex gap-md" style="flex-wrap: wrap">
+        <a class="btn" href="index.html">Início</a>
+        <a class="btn" href="admin.html">Admin</a>
+        <a class="btn" href="login.html">Entrar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="mb-lg">
+      <a href="index.html">Início</a> / <a href="carrinho.html">Carrinho</a> / Checkout
+    </nav>
+
+    <h1 class="mt-0 mb-xl">Finalizar Compra</h1>
+
+    <div class="grid checkout">
+      <!-- Checkout Form -->
+      <div>
+        <div class="card mb-lg">
+          <div class="body">
+            <h2 class="mt-0 mb-lg">Informações de Entrega</h2>
+            
+            <div class="form-group">
+              <label for="address">Endereço completo</label>
+              <input type="text" id="address" name="address" required placeholder="Rua, número, complemento" />
+            </div>
+            
+            <div class="grid" style="grid-template-columns: 2fr 1fr; gap: var(--spacing-md);">
+              <div class="form-group">
+                <label for="city">Cidade</label>
+                <input type="text" id="city" name="city" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="state">Estado</label>
+                <select id="state" name="state" required>
+                  <option value="">Selecione</option>
+                  <option value="AC">AC</option>
+                  <option value="AL">AL</option>
+                  <option value="AP">AP</option>
+                  <option value="AM">AM</option>
+                  <option value="BA">BA</option>
+                  <option value="CE">CE</option>
+                  <option value="DF">DF</option>
+                  <option value="ES">ES</option>
+                  <option value="GO">GO</option>
+                  <option value="MA">MA</option>
+                  <option value="MT">MT</option>
+                  <option value="MS">MS</option>
+                  <option value="MG">MG</option>
+                  <option value="PA">PA</option>
+                  <option value="PB">PB</option>
+                  <option value="PR">PR</option>
+                  <option value="PE">PE</option>
+                  <option value="PI">PI</option>
+                  <option value="RJ">RJ</option>
+                  <option value="RN">RN</option>
+                  <option value="RS">RS</option>
+                  <option value="RO">RO</option>
+                  <option value="RR">RR</option>
+                  <option value="SC">SC</option>
+                  <option value="SP">SP</option>
+                  <option value="SE">SE</option>
+                  <option value="TO">TO</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+              <div class="form-group">
+                <label for="zip">CEP</label>
+                <input type="text" id="zip" name="zip" required placeholder="00000-000" />
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Telefone</label>
+                <input type="tel" id="phone" name="phone" required placeholder="(00) 00000-0000" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-lg">
+          <div class="body">
+            <h2 class="mt-0 mb-lg">Método de Pagamento</h2>
+            
+            <div class="flex gap-sm mb-lg">
+              <button class="btn pill active" data-payment="card">Cartão de Crédito</button>
+              <button class="btn pill" data-payment="pix">PIX</button>
+              <button class="btn pill" data-payment="boleto">Boleto</button>
+            </div>
+            
+            <form id="card-form" class="form-group">
+              <div class="form-group">
+                <label for="card_name">Nome no cartão</label>
+                <input type="text" id="card_name" name="card_name" required placeholder="Nome como no cartão" />
+              </div>
+              
+              <div class="form-group">
+                <label for="card_number">Número do cartão</label>
+                <input type="text" id="card_number" name="card_number" required placeholder="0000 0000 0000 0000" />
+              </div>
+              
+              <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap: var(--spacing-md);">
+                <div class="form-group">
+                  <label for="card_expiry">Validade</label>
+                  <input type="text" id="card_expiry" name="card_expiry" required placeholder="MM/AA" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="card_cvv">CVV</label>
+                  <input type="text" id="card_cvv" name="card_cvv" required placeholder="123" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="card_cpf">CPF do titular</label>
+                  <input type="text" id="card_cpf" name="card_cpf" required placeholder="000.000.000-00" />
+                </div>
+              </div>
+            </form>
+            
+            <div id="pix-info" class="hidden text-center p-lg">
+              <p>Escaneie o QR Code para pagar com PIX:</p>
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=chave-pix-aleatoria" alt="PIX QR Code" style="margin: var(--spacing-md) auto; display: block;" />
+              <p class="text-muted">Chave PIX: chave-pix-aleatoria</p>
+            </div>
+            
+            <div id="boleto-info" class="hidden text-center p-lg">
+              <p>Clique no botão para gerar o boleto:</p>
+              <button class="btn primary large">Gerar Boleto Bancário</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div>
+        <div class="card">
+          <div class="body">
+            <h2 class="mt-0 mb-lg">Resumo do Pedido</h2>
+            
+            <div id="resumo" style="margin-bottom: var(--spacing-lg);">
+              <!-- Order items will be populated by JavaScript -->
+              <div class="text-center p-lg text-muted">
+                Nenhum item no carrinho
+              </div>
+            </div>
+            
+            <div class="flex-between mb-md">
+              <span>Subtotal</span>
+              <span id="subtotal">R$ 0,00</span>
+            </div>
+            
+            <div class="flex-between mb-md">
+              <span>Frete</span>
+              <span id="shipping">Grátis</span>
+            </div>
+            
+            <div class="flex-between mb-md">
+              <span>Desconto</span>
+              <span id="discount">- R$ 0,00</span>
+            </div>
+            
+            <div class="flex-between mb-lg" style="padding-top: var(--spacing-md); border-top: 1px solid var(--border);">
+              <span><strong>Total</strong></span>
+              <span id="total" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--primary);">R$ 0,00</span>
+            </div>
+            
+            <button id="finalizar" class="btn primary large" style="width: 100%;">
+              Finalizar Pedido
+            </button>
+            
+            <div class="text-center mt-md text-muted" style="font-size: var(--font-size-sm);">
+              🔒 Compra segura e protegida
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="flex-between" style="flex-wrap: wrap; gap: var(--spacing-md);">
+        <div class="flex gap-sm">
+          <img src="assets/logo.svg" style="height: 32px;" alt="EletroPrime" />
+          <div>© <span id="year"></span> EletroPrime</div>
+        </div>
+        <div class="text-muted">Loja demo • sem cobrança real</div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      
+      // Payment method switching
+      const paymentButtons = document.querySelectorAll('[data-payment]');
+      paymentButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          paymentButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const paymentMethod = btn.getAttribute('data-payment');
+          document.getElementById('card-form').classList.toggle('hidden', paymentMethod !== 'card');
+          document.getElementById('pix-info').classList.toggle('hidden', paymentMethod !== 'pix');
+          document.getElementById('boleto-info').classList.toggle('hidden', paymentMethod !== 'boleto');
+        });
+      });
+    </script>
+  </footer>
+</body>
+</html>

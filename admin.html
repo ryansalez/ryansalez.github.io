@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — EletroPrime</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="app.js"></script>
+</head>
+<body data-page="admin">
+  <header>
+    <div class="container nav">
+      <div class="flex gap-sm">
+        <button id="hamb" class="hamburger btn icon-only" aria-label="menu">☰</button>
+        <a class="logo" href="index.html">
+          <img src="assets/logo.svg" alt="EletroPrime" />
+          <span>EletroPrime</span>
+        </a>
+      </div>
+      <div class="search">
+        <input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar" />
+      </div>
+      <div class="toolbar">
+        <a class="btn icon-only" href="pedidos.html" aria-label="Pedidos">
+          📦
+        </a>
+        <a class="btn icon-only" href="carrinho.html" aria-label="Carrinho">
+          🛒 <span data-cart-count>0</span>
+        </a>
+        <span data-auth-area></span>
+        <button id="theme-toggle" class="btn icon-only" aria-label="Alternar tema">🌓</button>
+      </div>
+    </div>
+    <div id="mobileNav" class="hidden" style="background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding: var(--spacing-sm) var(--spacing-md); border-top: 1px solid var(--border);">
+      <div class="flex gap-md" style="flex-wrap: wrap">
+        <a class="btn" href="index.html">Início</a>
+        <a class="btn" href="admin.html">Admin</a>
+        <a class="btn" href="login.html">Entrar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="mb-lg">
+      <a href="index.html">Início</a> / Admin
+    </nav>
+
+    <!-- Admin Login -->
+    <div id="admin-login" class="auth-container">
+      <div class="card" style="max-width: 400px; width: 100%;">
+        <div class="body">
+          <h1 class="mt-0 text-center">Admin Login</h1>
+          
+          <form id="admin-login-form" class="form-group">
+            <div class="form-group">
+              <label for="admin-email">E-mail</label>
+              <input type="email" id="admin-email" name="email" required placeholder="seu@email.com" />
+            </div>
+            
+            <div class="form-group">
+              <label for="admin-password">Senha</label>
+              <input type="password" id="admin-password" name="password" required placeholder="••••••••" />
+            </div>
+            
+            <div class="form-group">
+              <button class="btn primary large" type="submit" style="width: 100%;">Entrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-content" class="hidden">
+      <div class="flex-between mb-xl">
+        <h1 class="mt-0 mb-0">Painel do Administrador</h1>
+        <button id="logout-btn" class="btn danger">Sair</button>
+      </div>
+
+      <div class="grid" style="grid-template-columns: 1fr 2fr; gap: var(--spacing-xl); align-items: start;">
+        <!-- Sidebar -->
+        <div class="card">
+          <div class="body">
+            <div class="flex-column gap-sm">
+              <button class="btn pill active" data-admin-tab="products">Produtos</button>
+              <button class="btn pill" data-admin-tab="orders">Pedidos</button>
+              <button class="btn pill" data-admin-tab="users">Usuários</button>
+              <button class="btn pill" data-admin-tab="reports">Relatórios</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Area -->
+        <div>
+          <!-- Products Tab -->
+          <div id="admin-products-tab">
+            <div class="flex-between mb-lg">
+              <h2 class="mt-0 mb-0">Gerenciar Produtos</h2>
+              <button class="btn primary" id="add-product-btn">Adicionar Produto</button>
+            </div>
+
+            <div class="card mb-lg">
+              <div class="body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Produto</th>
+                        <th>Marca</th>
+                        <th>Preço</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="admin-body">
+                      <!-- Products will be populated by JavaScript -->
+                      <tr>
+                        <td colspan="6" class="text-center text-muted">Nenhum produto encontrado</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Product Form (Hidden by default) -->
+          <div id="add-product-form" class="card hidden">
+            <div class="body">
+              <div class="flex-between mb-lg">
+                <h2 class="mt-0 mb-0">Adicionar Novo Produto</h2>
+                <button class="btn" id="cancel-add-product">Cancelar</button>
+              </div>
+
+              <form id="form-add" class="form-group">
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+                  <div class="form-group">
+                    <label for="product-name">Nome do Produto</label>
+                    <input type="text" id="product-name" name="name" required />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="product-brand">Marca</label>
+                    <input type="text" id="product-brand" name="brand" required />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="product-category">Categoria</label>
+                    <select id="product-category" name="category" required>
+                      <option value="">Selecione</option>
+                      <option value="Smartphones">Smartphones</option>
+                      <option value="Notebooks">Notebooks</option>
+                      <option value="Audio">Áudio</option>
+                      <option value="TVs">TVs</option>
+                      <option value="Consoles">Consoles</option>
+                      <option value="Perifericos">Periféricos</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="product-price">Preço (R$)</label>
+                    <input type="number" id="product-price" name="price" step="0.01" required />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="product-old-price">Preço Antigo (R$)</label>
+                    <input type="number" id="product-old-price" name="oldPrice" step="0.01" />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="product-stock">Estoque</label>
+                    <input type="number" id="product-stock" name="stock" value="0" />
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="product-image">Imagem do Produto</label>
+                  <input type="file" id="product-image" name="image" accept="image/*" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="product-image-url">Ou URL da Imagem</label>
+                  <input type="text" id="product-image-url" name="imageUrl" placeholder="https://exemplo.com/imagem.jpg" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="product-description">Descrição</label>
+                  <textarea id="product-description" name="description" rows="4"></textarea>
+                </div>
+                
+                <div class="flex gap-md mt-lg">
+                  <button class="btn primary" type="submit">Adicionar Produto</button>
+                  <button class="btn" type="button" id="cancel-add-product-2">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Orders Tab -->
+          <div id="admin-orders-tab" class="hidden">
+            <h2 class="mt-0 mb-lg">Gerenciar Pedidos</h2>
+            
+            <div class="card">
+              <div class="body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Pedido</th>
+                        <th>Cliente</th>
+                        <th>Data</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#PED12345</td>
+                        <td>João Silva</td>
+                        <td>15/05/2023</td>
+                        <td>R$ 1.299,90</td>
+                        <td><span class="badge warning">Em trânsito</span></td>
+                        <td>
+                          <button class="btn small">Ver</button>
+                          <button class="btn small primary">Atualizar</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>#PED12346</td>
+                        <td>Maria Santos</td>
+                        <td>22/05/2023</td>
+                        <td>R$ 2.499,90</td>
+                        <td><span class="badge success">Entregue</span></td>
+                        <td>
+                          <button class="btn small">Ver</button>
+                          <button class="btn small primary">Atualizar</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Users Tab -->
+          <div id="admin-users-tab" class="hidden">
+            <h2 class="mt-0 mb-lg">Gerenciar Usuários</h2>
+            
+            <div class="card">
+              <div class="body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Data de Registro</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#001</td>
+                        <td>João Silva</td>
+                        <td>joao@email.com</td>
+                        <td>10/01/2023</td>
+                        <td>
+                          <button class="btn small">Editar</button>
+                          <button class="btn small danger">Excluir</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>#002</td>
+                        <td>Maria Santos</td>
+                        <td>maria@email.com</td>
+                        <td>15/02/2023</td>
+                        <td>
+                          <button class="btn small">Editar</button>
+                          <button class="btn small danger">Excluir</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reports Tab -->
+          <div id="admin-reports-tab" class="hidden">
+            <h2 class="mt-0 mb-lg">Relatórios</h2>
+            
+            <div class="grid" style="grid-template-columns: repeat(2, 1fr); gap: var(--spacing-lg);">
+              <div class="card">
+                <div class="body">
+                  <h3 class="mt-0">Vendas por Mês</h3>
+                  <div style="height: 200px; background-color: var(--bg-input); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;">
+                    <span class="text-muted">Gráfico de vendas</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card">
+                <div class="body">
+                  <h3 class="mt-0">Produtos Mais Vendidos</h3>
+                  <div style="height: 200px; background-color: var(--bg-input); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;">
+                    <span class="text-muted">Gráfico de produtos</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card mt-lg">
+              <div class="body">
+                <h3 class="mt-0">Resumo</h3>
+                <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: var(--spacing-lg);">
+                  <div class="text-center p-md" style="background-color: var(--bg-input); border-radius: var(--radius);">
+                    <div style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--primary);">142</div>
+                    <div class="text-muted">Pedidos</div>
+                  </div>
+                  <div class="text-center p-md" style="background-color: var(--bg-input); border-radius: var(--radius);">
+                    <div style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--accent);">R$ 24.580</div>
+                    <div class="text-muted">Receita</div>
+                  </div>
+                  <div class="text-center p-md" style="background-color: var(--bg-input); border-radius: var(--radius);">
+                    <div style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--secondary);">86</div>
+                    <div class="text-muted">Clientes</div>
+                  </div>
+                  <div class="text-center p-md" style="background-color: var(--bg-input); border-radius: var(--radius);">
+                    <div style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--warning);">5</div>
+                    <div class="text-muted">Produtos</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="flex-between" style="flex-wrap: wrap; gap: var(--spacing-md);">
+        <div class="flex gap-sm">
+          <img src="assets/logo.svg" style="height: 32px;" alt="EletroPrime" />
+          <div>© <span id="year"></span> EletroPrime</div>
+        </div>
+        <div class="text-muted">Loja demo • sem cobrança real</div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      
+      // Admin tab switching
+      const adminTabButtons = document.querySelectorAll('[data-admin-tab]');
+      adminTabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          adminTabButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const tab = btn.getAttribute('data-admin-tab');
+          document.getElementById('admin-products-tab').classList.toggle('hidden', tab !== 'products');
+          document.getElementById('admin-orders-tab').classList.toggle('hidden', tab !== 'orders');
+          document.getElementById('admin-users-tab').classList.toggle('hidden', tab !== 'users');
+          document.getElementById('admin-reports-tab').classList.toggle('hidden', tab !== 'reports');
+        });
+      });
+      
+      // Add product form toggle
+      document.getElementById('add-product-btn').addEventListener('click', () => {
+        document.getElementById('admin-products-tab').classList.add('hidden');
+        document.getElementById('add-product-form').classList.remove('hidden');
+      });
+      
+      document.getElementById('cancel-add-product').addEventListener('click', () => {
+        document.getElementById('admin-products-tab').classList.remove('hidden');
+        document.getElementById('add-product-form').classList.add('hidden');
+      });
+      
+      document.getElementById('cancel-add-product-2').addEventListener('click', () => {
+        document.getElementById('admin-products-tab').classList.remove('hidden');
+        document.getElementById('add-product-form').classList.add('hidden');
+      });
+    </script>
+  </footer>
+</body>
+</html>

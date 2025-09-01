@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>EletroPrime — Loja</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer src="app.js"></script>
+  <style>
+    /* Estilos consistentes com as páginas anteriores */
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 24px;
+      margin: 40px 0;
+      align-items: start;
+    }
+    
+    .hero-content {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    
+    .featured-product {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .product-image {
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .product-image img {
+      max-width: 100%;
+      max-height: 160px;
+      object-fit: contain;
+    }
+    
+    .product-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: var(--accent);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .product-content {
+      padding: 24px;
+    }
+    
+    .product-price {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    
+    .current-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    
+    .old-price {
+      font-size: 1rem;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+    
+    .product-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    
+    .categories-section {
+      margin: 40px 0;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .view-all {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    
+    .category-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .category-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .category-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+    
+    .category-name {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .category-count {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .products-section {
+      margin: 40px 0;
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .card-image {
+      height: 200px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .card-image img {
+      max-width: 100%;
+      max-height: 160px;
+      object-fit: contain;
+    }
+    
+    .card-content {
+      padding: 20px;
+    }
+    
+    .card-badge {
+      background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    
+    .card-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    
+    .card-description {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    
+    .card-price {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .card-current {
+      font-weight: 700;
+      color: var(--accent);
+    }
+    
+    .card-old {
+      color: var(--muted);
+      text-decoration: line-through;
+      font-size: 0.9rem;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .btn-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-icon:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .features-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin: 40px 0;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 32px;
+    }
+    
+    .feature-item {
+      text-align: center;
+    }
+    
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      color: var(--primary);
+    }
+    
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .feature-description {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 968px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-content {
+        order: 2;
+      }
+      
+      .featured-product {
+        order: 1;
+      }
+      
+      .hero-actions {
+        flex-direction: column;
+      }
+      
+      .hero-actions .btn {
+        width: 100%;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body data-page="index">
+<header>
+  <div class="container nav">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button id="hamb" class="hamburger btn" aria-label="menu">☰</button>
+      <a class="logo" href="index.html"><img src="assets/logo.svg" alt="EletroPrime"/><span style="font-size:14px">EletroPrime</span></a>
+    </div>
+    <div class="search"><input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar"/></div>
+    <div class="toolbar" style="margin-left:12px">
+      <a class="btn" href="pedidos.html">Pedidos</a>
+      <a class="btn" href="carrinho.html">🛒 <span data-cart-count>0</span></a>
+      <span data-auth-area></span>
+      <button id="theme-toggle" class="btn">🌓</button>
+    </div>
+  </div>
+  <div id="mobileNav" class="hidden" style="background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:10px 16px;border-top:1px solid rgba(255,255,255,0.02)">
+    <a class="btn" href="index.html">Início</a> <a class="btn" href="admin.html">Admin</a> <a class="btn" href="login.html">Entrar</a>
+  </div>
+</header>
+
+<main class="container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Tecnologia com preços incríveis</h1>
+      <p class="hero-subtitle">Smartphones, notebooks, TVs, áudio e acessórios — tudo com entrega rápida e garantia.</p>
+      
+      <div class="hero-actions">
+        <a class="btn primary" href="#products">Ver Produtos</a>
+        <a class="btn" href="#categories">Explorar Categorias</a>
+        <a class="btn" href="carrinho.html">Ver Carrinho</a>
+      </div>
+      
+      <div>
+        <label class="badge">Buscar por categoria</label>
+        <div class="pills" style="margin-top:8px">
+          <button class="pill active" onclick="location.href='index.html'">Todos</button>
+          <button class="pill" onclick="filterProducts('smartphones')">📱 Smartphones</button>
+          <button class="pill" onclick="filterProducts('notebooks')">💻 Notebooks</button>
+          <button class="pill" onclick="filterProducts('audio')">🎧 Áudio</button>
+          <button class="pill" onclick="filterProducts('tvs')">📺 TVs</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="featured-product">
+      <div class="product-badge">Destaque da Semana</div>
+      <div class="product-image">
+        <img src="assets/p4.svg" alt="Smart TV 55'' 4K"/>
+      </div>
+      <div class="product-content">
+        <h3>Smart TV 55" 4K UHD</h3>
+        <p style="color:var(--muted);margin:8px 0">Android TV, HDR10, Dolby Audio</p>
+        <div class="product-price">
+          <span class="current-price">R$ 3.299,00</span>
+          <span class="old-price">R$ 3.999,00</span>
+        </div>
+        <div class="product-actions">
+          <button class="btn primary" onclick="addToCart('p4',1)">Adicionar ao Carrinho</button>
+          <a class="btn" href="produto.html?id=p4">Ver Detalhes</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories-section" id="categories">
+    <div class="section-header">
+      <h2 class="section-title">Categorias Populares</h2>
+      <a href="#categories" class="view-all">Ver todas</a>
+    </div>
+    
+    <div class="categories-grid">
+      <div class="category-card" onclick="filterProducts('smartphones')">
+        <div class="category-icon">📱</div>
+        <div class="category-name">Smartphones</div>
+        <div class="category-count">42 produtos</div>
+      </div>
+      
+      <div class="category-card" onclick="filterProducts('notebooks')">
+        <div class="category-icon">💻</div>
+        <div class="category-name">Notebooks</div>
+        <div class="category-count">28 produtos</div>
+      </div>
+      
+      <div class="category-card" onclick="filterProducts('tvs')">
+        <div class="category-icon">📺</div>
+        <div class="category-name">TVs</div>
+        <div class="category-count">15 produtos</div>
+      </div>
+      
+      <div class="category-card" onclick="filterProducts('audio')">
+        <div class="category-icon">🎧</div>
+        <div class="category-name">Áudio</div>
+        <div class="category-count">36 produtos</div>
+      </div>
+      
+      <div class="category-card" onclick="filterProducts('consoles')">
+        <div class="category-icon">🎮</div>
+        <div class="category-name">Consoles</div>
+        <div class="category-count">12 produtos</div>
+      </div>
+      
+      <div class="category-card" onclick="filterProducts('acessorios')">
+        <div class="category-icon">⌨️</div>
+        <div class="category-name">Acessórios</div>
+        <div class="category-count">54 produtos</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section class="products-section" id="products">
+    <div class="section-header">
+      <h2 class="section-title">Produtos em Destaque</h2>
+      <a href="#products" class="view-all">Ver todos</a>
+    </div>
+    
+    <div class="products-grid" id="produtos" aria-live="polite">
+      <!-- Produtos serão carregados via JavaScript -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="assets/p1.svg" alt="Smartphone Premium"/>
+        </div>
+        <div class="card-content">
+          <span class="card-badge">Mais Vendido</span>
+          <h3 class="card-title">Smartphone XYZ Pro 128GB</h3>
+          <p class="card-description">Câmera tripla, 8GB RAM, tela 6.7" AMOLED</p>
+          <div class="card-price">
+            <span class="card-current">R$ 2.499,00</span>
+            <span class="card-old">R$ 2.999,00</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn primary">Adicionar</button>
+            <button class="btn-icon">❤️</button>
+            <button class="btn-icon">👁️</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <div class="card-image">
+          <img src="assets/p2.svg" alt="Notebook Ultra"/>
+        </div>
+        <div class="card-content">
+          <span class="card-badge">Novidade</span>
+          <h3 class="card-title">Notebook Ultra Slim i7</h3>
+          <p class="card-description">16GB RAM, SSD 512GB, tela 14" Full HD</p>
+          <div class="card-price">
+            <span class="card-current">R$ 4.299,00</span>
+            <span class="card-old">R$ 4.899,00</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn primary">Adicionar</button>
+            <button class="btn-icon">❤️</button>
+            <button class="btn-icon">👁️</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <div class="card-image">
+          <img src="assets/p3.svg" alt="Fone Bluetooth"/>
+        </div>
+        <div class="card-content">
+          <span class="card-badge">Oferta</span>
+          <h3 class="card-title">Fone Bluetooth Noise Canceling</h3>
+          <p class="card-description">30h bateria, ANC, à prova d'água</p>
+          <div class="card-price">
+            <span class="card-current">R$ 599,00</span>
+            <span class="card-old">R$ 799,00</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn primary">Adicionar</button>
+            <button class="btn-icon">❤️</button>
+            <button class="btn-icon">👁️</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <div class="card-image">
+          <img src="assets/p5.svg" alt="Smartwatch"/>
+        </div>
+        <div class="card-content">
+          <span class="card-badge">Promoção</span>
+          <h3 class="card-title">Smartwatch Fitness Pro</h3>
+          <p class="card-description">Monitor cardíaco, GPS, 7 dias bateria</p>
+          <div class="card-price">
+            <span class="card-current">R$ 399,00</span>
+            <span class="card-old">R$ 599,00</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn primary">Adicionar</button>
+            <button class="btn-icon">❤️</button>
+            <button class="btn-icon">👁️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="section-header" style="justify-content: center; text-align: center;">
+      <h2 class="section-title">Por que escolher a EletroPrime?</h2>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🚚</div>
+        <h3 class="feature-title">Entrega Rápida</h3>
+        <p class="feature-description">Entregas em todo o Brasil com rapidez e segurança</p>
+      </div>
+      
+      <div class="feature-item">
+        <div class="feature-icon">🔒</div>
+        <h3 class="feature-title">Compra Segura</h3>
+        <p class="feature-description">Seus dados protegidos com criptografia avançada</p>
+      </div>
+      
+      <div class="feature-item">
+        <div class="feature-icon">💎</div>
+        <h3 class="feature-title">Garantia</h3>
+        <p class="feature-description">Todos os produtos com garantia do fabricante</p>
+      </div>
+      
+      <div class="feature-item">
+        <div class="feature-icon">💳</div>
+        <h3 class="feature-title">Parcele em até 12x</h3>
+        <p class="feature-description">Pagamento facilitado com cartão de crédito</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:10px"><img src="assets/logo.svg" style="height:28px"/><div>© <span id="year"></span> EletroPrime</div></div>
+      <div style="color:var(--muted)">Tecnologia e inovação para você</div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Função de exemplo para filtro de produtos
+    function filterProducts(category) {
+      console.log('Filtrando produtos por:', category);
+      // Implementação real viria do app.js
+    }
+    
+    // Função de exemplo para adicionar ao carrinho
+    function addToCart(productId, quantity) {
+      console.log('Adicionando ao carrinho:', productId, quantity);
+      // Implementação real viria do app.js
+    }
+  </script>
+</footer>
+
+<!-- Quick view modal -->
+<div id="quickModal" class="modal" role="dialog" aria-modal="true">
+  <div class="panel">
+    <div class="left"><img data-img src="assets/p1.svg" style="max-width:90%;max-height:320px" alt="visual"/></div>
+    <div class="right">
+      <button class="close" onclick="document.getElementById('quickModal').classList.remove('show')">✕</button>
+      <div class="badge" data-brand>Marca</div>
+      <h2 data-name>Nome do produto</h2>
+      <div style="margin:8px 0" data-desc>Descrição...</div>
+      <div style="font-size:18px;font-weight:800" data-price>R$ 0,00</div>
+      <div style="margin-top:12px"><button class="btn primary" data-add>Adicionar</button><a class="btn" href="produto.html" style="margin-left:8px">Página do produto</a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

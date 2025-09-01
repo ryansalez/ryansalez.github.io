@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Minha Conta — EletroPrime</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer src="app.js"></script>
+  <style>
+    /* Estilos consistentes com as páginas anteriores */
+    .account-container {
+      padding: 20px 0;
+    }
+    
+    .account-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .account-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    
+    .sidebar-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 20px;
+    }
+    
+    .content-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    
+    .content-card:last-child {
+      margin-bottom: 0;
+    }
+    
+    .nav-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .nav-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+    
+    .nav-pill:hover {
+      background: rgba(74, 144, 226, 0.1);
+    }
+    
+    .nav-pill.active {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    
+    .address-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    
+    .address-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      position: relative;
+    }
+    
+    .address-card.default {
+      border-color: var(--primary);
+      background: rgba(74, 144, 226, 0.05);
+    }
+    
+    .address-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .address-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    
+    .default-badge {
+      background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .address-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    
+    .add-address-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 20px;
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .add-address-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+    }
+    
+    .profile-info h3 {
+      margin: 0 0 4px 0;
+    }
+    
+    .profile-info p {
+      color: var(--muted);
+      margin: 0;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    @media (max-width: 968px) {
+      .account-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar-card {
+        position: static;
+        margin-bottom: 20px;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .address-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .account-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body data-page="conta">
+<header>
+  <div class="container nav">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button id="hamb" class="hamburger btn" aria-label="menu">☰</button>
+      <a class="logo" href="index.html"><img src="assets/logo.svg" alt="EletroPrime"/><span style="font-size:14px">EletroPrime</span></a>
+    </div>
+    <div class="search"><input id="q" placeholder="Buscar produtos, marcas..." aria-label="buscar"/></div>
+    <div class="toolbar" style="margin-left:12px">
+      <a class="btn" href="pedidos.html">Pedidos</a>
+      <a class="btn" href="carrinho.html">🛒 <span data-cart-count>0</span></a>
+      <span data-auth-area></span>
+      <button id="theme-toggle" class="btn">🌓</button>
+    </div>
+  </div>
+  <div id="mobileNav" class="hidden" style="background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:10px 16px;border-top:1px solid rgba(255,255,255,0.02)">
+    <a class="btn" href="index.html">Início</a> <a class="btn" href="admin.html">Admin</a> <a class="btn" href="login.html">Entrar</a>
+  </div>
+</header>
+
+<main class="container account-container">
+  <div class="account-header">
+    <h2>Minha Conta</h2>
+    <div style="color:var(--muted);font-size:14px">
+      Último acesso: <span id="last-access">20/12/2023 às 14:30</span>
+    </div>
+  </div>
+
+  <div class="account-grid">
+    <div class="sidebar-card">
+      <div class="nav-pills">
+        <button class="nav-pill active" data-tab="profile">
+          <span class="nav-icon">👤</span>
+          <span>Perfil</span>
+        </button>
+        <button class="nav-pill" data-tab="address">
+          <span class="nav-icon">🏠</span>
+          <span>Endereços</span>
+        </button>
+        <button class="nav-pill" data-tab="password">
+          <span class="nav-icon">🔒</span>
+          <span>Segurança</span>
+        </button>
+        <button class="nav-pill" data-tab="orders">
+          <span class="nav-icon">📦</span>
+          <span>Meus Pedidos</span>
+        </button>
+        <button class="nav-pill" data-tab="payment">
+          <span class="nav-icon">💳</span>
+          <span>Pagamentos</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="account-content">
+      <!-- Perfil -->
+      <div id="profile-tab" class="content-card">
+        <div class="profile-header">
+          <div class="profile-avatar">JC</div>
+          <div class="profile-info">
+            <h3>João da Silva</h3>
+            <p>joao.silva@email.com</p>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <h3 class="section-title">Informações Pessoais</h3>
+        </div>
+
+        <form id="profile-form" class="form-group">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome completo</label>
+              <input name="name" value="João da Silva" required/>
+            </div>
+            <div class="form-group">
+              <label>E-mail</label>
+              <input name="email" type="email" value="joao.silva@email.com" required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>CPF</label>
+              <input name="cpf" value="123.456.789-00" required/>
+            </div>
+            <div class="form-group">
+              <label>Telefone</label>
+              <input name="phone" value="(11) 99999-9999" required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Data de nascimento</label>
+              <input name="birthdate" type="date" value="1990-01-15" required/>
+            </div>
+            <div class="form-group">
+              <label>Gênero</label>
+              <select name="gender">
+                <option value="male">Masculino</option>
+                <option value="female">Feminino</option>
+                <option value="other">Outro</option>
+                <option value="none">Prefiro não informar</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <button class="btn primary" type="submit">Salvar Alterações</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Endereços -->
+      <div id="address-tab" class="content-card hidden">
+        <div class="section-header">
+          <h3 class="section-title">Meus Endereços</h3>
+          <button class="btn primary">+ Novo Endereço</button>
+        </div>
+
+        <div class="address-grid">
+          <div class="address-card default">
+            <div class="address-header">
+              <div class="address-title">Casa</div>
+              <div class="default-badge">Principal</div>
+            </div>
+            <div class="address-details">
+              <p>Rua das Flores, 123</p>
+              <p>Jardim Paulista - São Paulo, SP</p>
+              <p>CEP: 01415-000</p>
+            </div>
+            <div class="address-actions">
+              <button class="btn btn-sm">Editar</button>
+              <button class="btn btn-sm">Remover</button>
+            </div>
+          </div>
+
+          <div class="address-card">
+            <div class="address-header">
+              <div class="address-title">Trabalho</div>
+            </div>
+            <div class="address-details">
+              <p>Av. Paulista, 1000</p>
+              <p>Bela Vista - São Paulo, SP</p>
+              <p>CEP: 01310-000</p>
+            </div>
+            <div class="address-actions">
+              <button class="btn btn-sm">Editar</button>
+              <button class="btn btn-sm">Definir como principal</button>
+              <button class="btn btn-sm">Remover</button>
+            </div>
+          </div>
+
+          <button class="add-address-btn">
+            <span>+</span>
+            Adicionar novo endereço
+          </button>
+        </div>
+      </div>
+
+      <!-- Segurança -->
+      <div id="password-tab" class="content-card hidden">
+        <div class="section-header">
+          <h3 class="section-title">Alterar Senha</h3>
+        </div>
+
+        <form id="password-form" class="form-group">
+          <div class="form-group">
+            <label>Senha atual</label>
+            <input name="current_password" type="password" required/>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nova senha</label>
+              <input name="new_password" type="password" required/>
+            </div>
+            <div class="form-group">
+              <label>Confirmar nova senha</label>
+              <input name="confirm_password" type="password" required/>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <button class="btn primary" type="submit">Alterar Senha</button>
+          </div>
+        </form>
+
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
+          <h4 style="margin-bottom: 16px;">Sessões Ativas</h4>
+          <div style="background: rgba(74, 144, 226, 0.05); padding: 16px; border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div>
+                <div style="font-weight: 500;">Este dispositivo</div>
+                <div style="font-size: 14px; color: var(--muted);">Chrome • Windows • Online agora</div>
+              </div>
+              <button class="btn btn-sm">Sair</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pedidos -->
+      <div id="orders-tab" class="content-card hidden">
+        <div class="section-header">
+          <h3 class="section-title">Histórico de Pedidos</h3>
+        </div>
+        <div style="text-align: center; padding: 40px; color: var(--muted);">
+          <p>📦 Nenhum pedido encontrado</p>
+          <p style="margin-top: 12px;">Seus pedidos aparecerão aqui</p>
+          <a href="index.html" class="btn" style="margin-top: 20px;">Continuar Comprando</a>
+        </div>
+      </div>
+
+      <!-- Pagamentos -->
+      <div id="payment-tab" class="content-card hidden">
+        <div class="section-header">
+          <h3 class="section-title">Métodos de Pagamento</h3>
+          <button class="btn primary">+ Adicionar Cartão</button>
+        </div>
+        <div style="text-align: center; padding: 40px; color: var(--muted);">
+          <p>💳 Nenhum cartão cadastrado</p>
+          <p style="margin-top: 12px;">Adicione um cartão para agilizar suas compras</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:10px"><img src="assets/logo.svg" style="height:28px"/><div>© <span id="year"></span> EletroPrime</div></div>
+      <div style="color:var(--muted)"></div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('last-access').textContent = new Date().toLocaleString('pt-BR');
+    
+    // Navegação entre abas
+    document.querySelectorAll('.nav-pill').forEach(pill => {
+      pill.addEventListener('click', function() {
+        // Remover classe active de todos os pills
+        document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.content-card').forEach(card => card.classList.add('hidden'));
+        
+        // Adicionar classe active ao pill clicado
+        this.classList.add('active');
+        
+        // Mostrar conteúdo correspondente
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+      });
+    });
+  </script>
+</footer>
+</body>
+</html>
